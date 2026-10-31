@@ -37,6 +37,8 @@ class Settings(BaseSettings):
     stock_location_id: str = Field(pattern=r"^sloc_")
     db_readonly_url: str
     redis_url: str
+    # Test-only signing secret of the local stand (for expired/re-signed token tests).
+    jwt_secret: str = ""
 
 
 @lru_cache(maxsize=1)

@@ -12,7 +12,7 @@ import pytest
 
 from shop_api import jwt
 from shop_api.clients import AuthClient, StoreClient
-from shop_api.config import DEFAULT_ENV_FILE
+from shop_api.config import Settings
 from shop_api.data import cases
 from shop_api.factories import TEST_PASSWORD, unique_email
 from shop_api.models import MedusaError
@@ -71,14 +71,11 @@ def test_login_with_bad_credentials(
 
 
 @pytest.fixture
-def jwt_secret() -> str:
-    secret = os.environ.get("SUT_JWT_SECRET") or ""
-    if not secret:
-        for line in DEFAULT_ENV_FILE.read_text(encoding="utf-8").splitlines():
-            if line.startswith("SUT_JWT_SECRET="):
-                secret = line.split("=", 1)[1]
-    assert secret, "SUT_JWT_SECRET missing from the contract file; re-run make -C ../shop-sut bootstrap"
-    return secret
+def jwt_secret(settings: Settings) -> str:
+    assert settings.jwt_secret, (
+        "SUT_JWT_SECRET missing from the contract file; re-run make -C ../shop-sut bootstrap"
+    )
+    return settings.jwt_secret
 
 
 @allure.story("Forged and expired tokens are rejected")
