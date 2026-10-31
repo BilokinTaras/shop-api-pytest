@@ -1,0 +1,24 @@
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+# Secrets and generated state
+.env
+.env.*
+!.env.example
+.generated/
+*.pem
+*.key
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+allure-results/
+allure-report/
+reports/
+node_modules/
