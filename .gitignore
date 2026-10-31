@@ -22,3 +22,5 @@ allure-results/
 allure-report/
 reports/
 node_modules/
+.schemathesis/
+postman/node_modules/
