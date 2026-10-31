@@ -16,14 +16,28 @@ FIELDS = "id,handle,title"
 
 
 @pytest.fixture(scope="module")
-def total(store: StoreClient) -> int:
-    return store.list_products(limit=1, fields=FIELDS).count
+def stable(store: StoreClient) -> dict[str, str]:
+    """Pagination is checked inside the seeded "QA Picks" collection (3 products). Other tests create and
+    delete products in parallel, so the size of the whole catalog is not a stable oracle."""
+    collection = store.request("GET", "/store/collections", params={"handle": "qa-picks"}).json()[
+        "collections"
+    ][0]
+    return {"collection_id[]": collection["id"], "fields": FIELDS}
+
+
+@pytest.fixture(scope="module")
+def total(store: StoreClient, stable: dict[str, str]) -> int:
+    count = store.list_products(limit=1, **stable).count
+    assert count == 3, "QA Picks collection should hold qa-tee, qa-mug and qa-sold-out"
+    return count
 
 
 @allure.story("Pagination boundaries")
 @pytest.mark.parametrize("limit", [0, 1, 2, 50], ids=lambda v: f"limit={v}")
-def test_limit_returns_at_most_limit_products(store: StoreClient, total: int, limit: int) -> None:
-    page = store.list_products(limit=limit, fields=FIELDS)
+def test_limit_returns_at_most_limit_products(
+    store: StoreClient, stable: dict[str, str], total: int, limit: int
+) -> None:
+    page = store.list_products(limit=limit, **stable)
     assert page.limit == limit
     assert len(page.products) == min(limit, total)
     assert page.count == total
@@ -31,19 +45,21 @@ def test_limit_returns_at_most_limit_products(store: StoreClient, total: int, li
 
 @allure.story("Pagination boundaries")
 @pytest.mark.parametrize("delta", [-1, 0, 1], ids=["last-item", "count", "past-count"])
-def test_offset_around_the_end_of_the_catalog(store: StoreClient, total: int, delta: int) -> None:
-    page = store.list_products(offset=total + delta, fields=FIELDS)
+def test_offset_around_the_end_of_the_catalog(
+    store: StoreClient, stable: dict[str, str], total: int, delta: int
+) -> None:
+    page = store.list_products(offset=total + delta, **stable)
     assert len(page.products) == (1 if delta == -1 else 0)
     assert page.count == total
 
 
 @allure.story("Pagination boundaries")
-def test_pages_do_not_overlap_and_cover_the_catalog(store: StoreClient, total: int) -> None:
+def test_pages_do_not_overlap_and_cover_the_catalog(
+    store: StoreClient, stable: dict[str, str], total: int
+) -> None:
     seen: list[str] = []
-    for offset in range(0, total, 3):
-        seen += [
-            p.id for p in store.list_products(limit=3, offset=offset, order="handle", fields=FIELDS).products
-        ]
+    for offset in range(0, total, 2):
+        seen += [p.id for p in store.list_products(limit=2, offset=offset, order="handle", **stable).products]
     assert len(seen) == total
     assert len(set(seen)) == total
 
@@ -76,8 +92,8 @@ def test_full_text_search(store: StoreClient) -> None:
 
 
 @allure.story("Filters")
-def test_filter_by_ids(store: StoreClient) -> None:
-    ids = [p.id for p in store.list_products(limit=2, order="handle", fields=FIELDS).products]
+def test_filter_by_ids(store: StoreClient, stable: dict[str, str]) -> None:
+    ids = [p.id for p in store.list_products(limit=2, order="handle", **stable).products]
     page = store.list_products(**{"id[]": ids}, fields=FIELDS)
     assert sorted(p.id for p in page.products) == sorted(ids)
 

@@ -7,6 +7,7 @@ import logging
 import re
 from collections import deque
 from dataclasses import dataclass
+from decimal import Decimal
 from typing import Any, Self, TypeVar
 
 import httpx
@@ -104,7 +105,8 @@ class BaseClient:
             raise ApiError(
                 f"{method} {path}: expected {expected}, got {response.status_code}: {response.text[:500]}"
             )
-        return model.model_validate(response.json())
+        # parse_float=Decimal: amounts such as 25.4745 must not pass through binary floats.
+        return model.model_validate(json.loads(response.text, parse_float=Decimal))
 
     def with_headers(self, **headers: str) -> Self:
         clone = self.__class__.__new__(self.__class__)

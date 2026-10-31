@@ -1,0 +1,68 @@
+# Pricing scenarios: every scenario builds isolated products and promotions through the Admin API,
+# a cart through the Store API, and compares Medusa's totals with the independent oracle.
+# Regions: eu (seeded Europe, EUR, 0 % tax, shipping 10), usd (seeded QA North America),
+#          tax25_excl (created: Poland, 25 %, tax-exclusive prices),
+#          tax25_incl (created: Netherlands, 25 %, tax-inclusive prices).
+# Technique per group is noted in comments: EP = equivalence partitioning, BVA = boundary values,
+# DT = decision table rows. `docs` marks numbers taken from Medusa's documentation.
+
+scenarios:
+  # --- baseline (EP: no promotion) ---
+  - { id: no-promo-single, region: eu, lines: [{ product: A, price: "25", qty: 1 }] }
+  - { id: no-promo-several-lines, region: eu, lines: [{ product: A, price: "25", qty: 2 }, { product: B, price: "12.50", qty: 3 }] }
+  - { id: no-promo-with-shipping, region: eu, shipping: true, lines: [{ product: A, price: "9.99", qty: 1 }] }
+
+  # --- order-level percentage and fixed (EP on method) ---
+  - { id: pct-10-order, region: eu, lines: [{ product: A, price: "25", qty: 2 }], promos: [{ method: percentage, value: "10" }] }
+  - { id: pct-15-awkward-price, region: eu, lines: [{ product: A, price: "9.99", qty: 3 }], promos: [{ method: percentage, value: "15" }] }
+  - { id: pct-33-one-cent, region: eu, lines: [{ product: A, price: "0.01", qty: 1 }], promos: [{ method: percentage, value: "33" }] }
+  - { id: pct-100-order, region: eu, shipping: true, lines: [{ product: A, price: "19.99", qty: 1 }], promos: [{ method: percentage, value: "100" }] }
+  - { id: fixed-7-two-lines, region: eu, lines: [{ product: A, price: "20", qty: 1 }, { product: B, price: "5", qty: 1 }], promos: [{ method: fixed, value: "7" }] }
+  - { id: fixed-10-uneven-split, region: eu, lines: [{ product: A, price: "3.33", qty: 1 }, { product: B, price: "9.99", qty: 1 }], promos: [{ method: fixed, value: "10" }] }
+  - { id: fixed-10-three-equal-lines, region: eu, lines: [{ product: A, price: "3.33", qty: 1 }, { product: B, price: "3.33", qty: 1 }, { product: C, price: "3.33", qty: 1 }], promos: [{ method: fixed, value: "10" }] }
+  - { id: fixed-larger-than-cart, region: eu, lines: [{ product: A, price: "9.99", qty: 1 }], promos: [{ method: fixed, value: "50" }] }
+
+  # --- item targets and allocation (EP on allocation, BVA on max_quantity) ---
+  - { id: items-pct-10-target-rule, region: eu, lines: [{ product: A, price: "20", qty: 1 }, { product: B, price: "5", qty: 2 }], promos: [{ method: percentage, value: "10", target: items, allocation: each, max_quantity: 10, target_products: [B] }] }
+  - { id: items-pct-10-across, region: eu, lines: [{ product: A, price: "20", qty: 1 }, { product: B, price: "5", qty: 1 }], promos: [{ method: percentage, value: "10", target: items, allocation: across }] }
+  - { id: items-fixed-1-each, region: eu, lines: [{ product: A, price: "3.33", qty: 2 }], promos: [{ method: fixed, value: "1", target: items, allocation: each, max_quantity: 5 }] }
+  - { id: items-each-max-qty-below-quantity, region: eu, lines: [{ product: A, price: "10", qty: 3 }], promos: [{ method: fixed, value: "2", target: items, allocation: each, max_quantity: 1 }] }
+  - { id: items-pct-each-max-qty-2-of-3, region: eu, lines: [{ product: A, price: "10", qty: 3 }], promos: [{ method: percentage, value: "50", target: items, allocation: each, max_quantity: 2 }] }
+  - { id: items-once-max-2-cheapest-first, region: eu, lines: [{ product: A, price: "20", qty: 3 }, { product: B, price: "5", qty: 4 }], promos: [{ method: fixed, value: "1", target: items, allocation: once, max_quantity: 2 }] }
+  - { id: items-once-max-5-spills-to-next-line, region: eu, lines: [{ product: A, price: "10", qty: 3 }, { product: B, price: "20", qty: 4 }], promos: [{ method: fixed, value: "1", target: items, allocation: once, max_quantity: 5 }] }
+
+  # --- buy X get Y (DT: condition met / not met / more targets than allowed) ---
+  - { id: buyget-2a-get-1b-free, region: eu, lines: [{ product: A, price: "20", qty: 2 }, { product: B, price: "5", qty: 1 }], promos: [{ method: percentage, value: "100", buyget: { buy: [A], min_quantity: 2, apply_to_quantity: 1, targets: [B] } }] }
+  - { id: buyget-condition-not-met, region: eu, lines: [{ product: A, price: "20", qty: 1 }, { product: B, price: "5", qty: 1 }], promos: [{ method: percentage, value: "100", buyget: { buy: [A], min_quantity: 2, apply_to_quantity: 1, targets: [B] } }] }
+  - { id: buyget-only-one-of-two-targets, region: eu, lines: [{ product: A, price: "20", qty: 2 }, { product: B, price: "5", qty: 2 }], promos: [{ method: percentage, value: "100", buyget: { buy: [A], min_quantity: 2, apply_to_quantity: 1, targets: [B] } }] }
+
+  # --- shipping targets ---
+  - { id: free-shipping, region: eu, shipping: true, lines: [{ product: A, price: "9.99", qty: 1 }], promos: [{ method: percentage, value: "100", target: shipping_methods }] }
+  - { id: shipping-fixed-3-off, region: eu, shipping: true, lines: [{ product: A, price: "9.99", qty: 1 }], promos: [{ method: fixed, value: "3", target: shipping_methods }] }
+
+  # --- minimum spend threshold 20.00 (BVA: X-0.01, X, X+0.01) ---
+  - { id: min-spend-minus-one-cent, region: eu, lines: [{ product: A, price: "19.99", qty: 1 }], promos: [{ method: percentage, value: "10", min_item_subtotal: "20" }] }
+  - { id: min-spend-exact, region: eu, lines: [{ product: A, price: "20.00", qty: 1 }], promos: [{ method: percentage, value: "10", min_item_subtotal: "20" }] }
+  - { id: min-spend-plus-one-cent, region: eu, lines: [{ product: A, price: "20.01", qty: 1 }], promos: [{ method: percentage, value: "10", min_item_subtotal: "20" }] }
+
+  # --- stacking and currency (DT) ---
+  - { id: stack-pct-then-fixed, region: eu, lines: [{ product: A, price: "20", qty: 1 }, { product: B, price: "5", qty: 1 }], promos: [{ method: percentage, value: "10" }, { method: fixed, value: "5" }] }
+  - { id: stack-fixed-then-pct, region: eu, lines: [{ product: A, price: "20", qty: 1 }, { product: B, price: "5", qty: 1 }], promos: [{ method: fixed, value: "5" }, { method: percentage, value: "10" }] }
+  - { id: eur-fixed-code-on-usd-cart, region: usd, lines: [{ product: A, price: "14", qty: 1 }], promos: [{ method: fixed, value: "5", currency: eur }] }
+  - { id: usd-percentage-no-currency, region: usd, lines: [{ product: A, price: "14", qty: 2 }], promos: [{ method: percentage, value: "25" }] }
+
+  # --- quantity boundaries ---
+  - { id: quantity-1, region: eu, lines: [{ product: A, price: "0.99", qty: 1 }], promos: [{ method: percentage, value: "10" }] }
+  - { id: quantity-100, region: eu, lines: [{ product: A, price: "0.99", qty: 100 }], promos: [{ method: percentage, value: "10" }] }
+
+  # --- taxes, tax-exclusive prices (docs: 100 -> 125, 112.50, 115) ---
+  - { id: tax-excl-no-promo, region: tax25_excl, lines: [{ product: A, price: "100", qty: 1 }] }
+  - { id: tax-excl-fixed-10-excl-promo, docs: true, region: tax25_excl, lines: [{ product: A, price: "100", qty: 1 }], promos: [{ method: fixed, value: "10" }] }
+  - { id: tax-excl-fixed-10-incl-promo, docs: true, region: tax25_excl, lines: [{ product: A, price: "100", qty: 1 }], promos: [{ method: fixed, value: "10", tax_inclusive: true }] }
+  - { id: tax-excl-pct-15-awkward, region: tax25_excl, lines: [{ product: A, price: "9.99", qty: 3 }], promos: [{ method: percentage, value: "15" }] }
+
+  # --- taxes, tax-inclusive prices (docs: $100 cart, $10 tax-inclusive promo -> $90) ---
+  - { id: tax-incl-no-promo, region: tax25_incl, lines: [{ product: A, price: "100", qty: 1 }] }
+  - { id: tax-incl-fixed-10-incl-promo, docs: true, region: tax25_incl, lines: [{ product: A, price: "100", qty: 1 }], promos: [{ method: fixed, value: "10", tax_inclusive: true }] }
+  - { id: tax-incl-fixed-10-excl-promo, region: tax25_incl, lines: [{ product: A, price: "100", qty: 1 }], promos: [{ method: fixed, value: "10" }] }
+  - { id: tax-incl-pct-10, region: tax25_incl, lines: [{ product: A, price: "100", qty: 1 }], promos: [{ method: percentage, value: "10" }] }

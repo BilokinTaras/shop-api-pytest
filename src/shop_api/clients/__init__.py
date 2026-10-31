@@ -173,6 +173,7 @@ class AdminClient(BaseClient):
         *,
         target_type: str = "order",
         allocation: str | None = None,
+        max_quantity: int | None = None,
         currency_code: str | None = None,
         rules: list[dict[str, Any]] | None = None,
         target_rules: list[dict[str, Any]] | None = None,
@@ -183,9 +184,14 @@ class AdminClient(BaseClient):
         is_automatic: bool = False,
         is_tax_inclusive: bool | None = None,
     ) -> Promotion:
-        application_method: dict[str, Any] = {"type": method, "value": str(value), "target_type": target_type}
+        application_method: dict[str, Any] = {
+            "type": method,
+            "value": float(Decimal(str(value))),  # JSON number; two-decimal values round-trip exactly
+            "target_type": target_type,
+        }
         optional = {
             "allocation": allocation,
+            "max_quantity": max_quantity,
             "currency_code": currency_code,
             "target_rules": target_rules,
             "buy_rules": buy_rules,
