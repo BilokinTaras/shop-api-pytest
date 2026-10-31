@@ -2,9 +2,13 @@
 
 from __future__ import annotations
 
+import json
+import platform
 from collections.abc import Callable, Iterator
 from dataclasses import dataclass
 from decimal import Decimal
+from importlib.metadata import version
+from pathlib import Path
 from typing import Any
 
 import allure
@@ -102,6 +106,21 @@ def make_promotion(admin: AdminClient, settings: Settings) -> Iterator[Promotion
     yield _make
     for promotion_id in created:
         admin.delete_promotion(promotion_id)
+
+
+def pytest_sessionstart(session: pytest.Session) -> None:
+    """Records versions for the Allure environment panel (reports/run-info.json, read by allurerc.mjs)."""
+    if hasattr(session.config, "workerinput"):  # only the xdist controller writes it
+        return
+    info = {
+        "Medusa": get_settings().medusa_version,
+        "Backend": get_settings().backend_url,
+        "Python": platform.python_version(),
+        "OS": f"{platform.system()} {platform.release()} ({platform.machine()})",
+        **{name: version(name) for name in ("pytest", "httpx", "pydantic", "hypothesis", "schemathesis")},
+    }
+    Path("reports").mkdir(exist_ok=True)
+    Path("reports/run-info.json").write_text(json.dumps(info, indent=2), encoding="utf-8")
 
 
 @pytest.hookimpl(tryfirst=True)

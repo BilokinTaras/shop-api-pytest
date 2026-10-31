@@ -1,0 +1,14 @@
+{
+  "name": "shop-api-pytest-node-tools",
+  "private": true,
+  "description": "Node tools for the Python suite: Newman (Postman) and Allure Report 3.",
+  "scripts": {
+    "newman": "sh postman/run-newman.sh",
+    "report": "allure generate allure-results -c allurerc.mjs --clean -o allure-report"
+  },
+  "devDependencies": {
+    "allure": "3.22.1",
+    "newman": "6.2.3",
+    "newman-reporter-htmlextra": "1.23.1"
+  }
+}

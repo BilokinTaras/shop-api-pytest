@@ -3,7 +3,7 @@ SHELL := /bin/sh
 SUT_DIR ?= ../shop-sut
 IMAGE := qa-shop-api-pytest:local
 
-.PHONY: help sut-up install lint format typecheck smoke test test-seq unit report docker-build docker-test newman
+.PHONY: help sut-up install lint format typecheck smoke test test-seq unit report docker-build docker-test newman node-tools
 
 help: ## Show targets
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*## "} {printf "  %-13s %s\n", $$1, $$2}'
@@ -36,8 +36,9 @@ test: ## Full suite in parallel
 test-seq: ## Full suite sequentially
 	uv run pytest -q
 
-report: ## Build and open the Allure report (needs allure CLI)
-	allure generate allure-results -o allure-report --clean && allure open allure-report
+report: node-tools ## Build the Allure 3 report (history kept in reports/allure-history.jsonl)
+	npx allure generate allure-results -c allurerc.mjs --clean -o allure-report
+	@echo "open allure-report/index.html, or: npx allure open allure-report"
 
 docker-build: ## Build the test runner image
 	docker build -f docker/Dockerfile -t $(IMAGE) .
@@ -66,5 +67,8 @@ coverage: ## Run the suite with call recording and write docs/api-coverage.md
 	SHOP_API_RECORD_DIR=reports/calls uv run pytest -n auto -q -p no:randomly || true
 	uv run python scripts/api_coverage.py reports/calls
 
-newman: ## Postman smoke collection via Newman (HTML + JUnit in reports/newman)
-	cd postman && npm ci --no-audit --no-fund && sh run-newman.sh
+node-tools:
+	npm ci --no-audit --no-fund
+
+newman: node-tools ## Postman smoke collection via Newman (HTML + JUnit in reports/newman)
+	sh postman/run-newman.sh
