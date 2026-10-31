@@ -13,6 +13,12 @@ catalog_query:
     - { id: offset-minus-one, params: { offset: -1 }, status: 400, type: invalid_data, finding: BUG-API-001 }
     - { id: limit-decimal, params: { limit: "1.5" }, status: 400, type: invalid_data, finding: BUG-API-005 }
     - { id: unknown-order-field, params: { order: no_such_field }, status: 400, type: invalid_data }
+    - { id: unknown-param, params: { x: "1" }, status: 400, type: invalid_data, message: "Unrecognized fields" }
+    - { id: unknown-param-one-dot, params: { a.b: "1" }, status: 400, type: invalid_data, message: "Unrecognized fields" }
+    # Found by Schemathesis fuzzing (docs/contract-findings.md)
+    - { id: unknown-param-two-dots, params: { a.b.c: "1" }, status: 400, type: invalid_data, finding: BUG-API-007 }
+    - { id: created-at-empty, params: { created_at: "" }, status: 400, type: invalid_data, finding: BUG-API-008 }
+    - { id: updated-at-not-a-date, params: { updated_at: not-a-date }, status: 400, type: invalid_data, finding: BUG-API-008 }
 
 line_item_quantity:
   technique: Boundary value analysis (valid partition starts at 1) and equivalence partitioning
@@ -45,4 +51,5 @@ unknown_ids:
     - { id: shipping-method-on-unknown-cart, method: POST, path: /store/carts/cart_does_not_exist/shipping-methods, body: { option_id: so_x }, status: 404, type: not_found }
     - { id: complete-unknown-cart, method: POST, path: /store/carts/cart_does_not_exist/complete, status: 404, type: not_found }
     - { id: add-promotion-on-unknown-cart, method: POST, path: /store/carts/cart_does_not_exist/promotions, body: { promo_codes: [X] }, status: 404, type: not_found, finding: BUG-API-004 }
+    - { id: remove-line-item-on-unknown-cart, method: DELETE, path: /store/carts/cart_does_not_exist/line-items/cali_does_not_exist, status: 404, type: not_found, finding: BUG-API-004 }
     - { id: remove-promotion-on-unknown-cart, method: DELETE, path: /store/carts/cart_does_not_exist/promotions, body: { promo_codes: [X] }, status: 404, type: not_found, finding: BUG-API-004 }

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import re
 from collections import deque
 from dataclasses import dataclass
@@ -90,6 +91,10 @@ class BaseClient:
             elapsed_ms=response.elapsed.total_seconds() * 1000,
         )
         JOURNAL.items.append(exchange)
+        if record_dir := os.environ.get("SHOP_API_RECORD_DIR"):
+            # One file per process, so parallel xdist workers never interleave writes.
+            with open(os.path.join(record_dir, f"calls-{os.getpid()}.txt"), "a", encoding="utf-8") as fh:
+                fh.write(f"{request.method} {request.url.path}\n")
         log.debug(
             "%s %s -> %s (%.0f ms)", exchange.method, exchange.url, exchange.status, exchange.elapsed_ms
         )

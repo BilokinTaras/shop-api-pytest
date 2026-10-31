@@ -96,3 +96,14 @@ def test_store_requires_a_valid_publishable_key(
     error = MedusaError.model_validate(response.json())
     assert error.type == "not_allowed"
     assert message in error.message
+
+
+@allure.story("Unknown resource IDs")
+@pytest.mark.finding("BUG-API-009")
+@pytest.mark.xfail(
+    reason="BUG-API-009: deleting a line item that does not exist reports deleted: true", strict=True
+)
+def test_deleting_a_line_item_that_does_not_exist_is_404(store: StoreClient, settings: Settings) -> None:
+    cart = store.create_cart(settings.region_id)
+    response = store.request("DELETE", f"/store/carts/{cart.id}/line-items/cali_does_not_exist")
+    assert response.status_code == 404, response.text

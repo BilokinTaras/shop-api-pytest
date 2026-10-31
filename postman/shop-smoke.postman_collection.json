@@ -1,0 +1,643 @@
+{
+  "info": {
+    "name": "shop-api smoke: products -> cart -> promotion -> order",
+    "description": "Smoke flow for the Medusa stand (shop-sut). Values come from the environment; nothing secret is stored here.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Admin login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/auth/user/emailpass",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "auth",
+            "user",
+            "emailpass"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{admin_email}}\",\n  \"password\": \"{{admin_password}}\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status 200', () => pm.response.to.have.status(200));",
+              "const t = pm.response.json().token;",
+              "pm.test('token is a JWT', () => pm.expect(t.split('.')).to.have.lengthOf(3));",
+              "pm.collectionVariables.set('admin_token', t);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Create 10% promotion (admin)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{admin_token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/admin/promotions",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "admin",
+            "promotions"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"code\": \"{{promo_code}}\",\n  \"type\": \"standard\",\n  \"status\": \"active\",\n  \"is_automatic\": false,\n  \"application_method\": {\n    \"type\": \"percentage\",\n    \"value\": 10,\n    \"target_type\": \"order\"\n  }\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.collectionVariables.set('promo_code', 'QA-PM-' + Date.now());"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status 200', () => pm.response.to.have.status(200));",
+              "pm.collectionVariables.set('promo_id', pm.response.json().promotion.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Find QA Mug",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-publishable-api-key",
+            "value": "{{publishable_key}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/store/products?handle=qa-mug&fields=*variants",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "store",
+            "products"
+          ],
+          "query": [
+            {
+              "key": "handle",
+              "value": "qa-mug"
+            },
+            {
+              "key": "fields",
+              "value": "*variants"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status 200', () => pm.response.to.have.status(200));",
+              "const p = pm.response.json().products;",
+              "pm.test('exactly one product', () => pm.expect(p).to.have.lengthOf(1));",
+              "pm.collectionVariables.set('variant_id', p[0].variants[0].id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Create cart",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "x-publishable-api-key",
+            "value": "{{publishable_key}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/store/carts",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "store",
+            "carts"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"region_id\": \"{{region_id}}\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status 200', () => pm.response.to.have.status(200));",
+              "const c = pm.response.json().cart;",
+              "pm.test('cart in EUR and empty', () => { pm.expect(c.currency_code).to.eql('eur'); pm.expect(c.items).to.have.lengthOf(0); });",
+              "pm.collectionVariables.set('cart_id', c.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Add 2 x QA Mug",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "x-publishable-api-key",
+            "value": "{{publishable_key}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/store/carts/{{cart_id}}/line-items",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "store",
+            "carts",
+            "{{cart_id}}",
+            "line-items"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"variant_id\": \"{{variant_id}}\",\n  \"quantity\": 2\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status 200', () => pm.response.to.have.status(200));",
+              "pm.test('item subtotal 25.00', () => pm.expect(pm.response.json().cart.item_subtotal).to.eql(25));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Apply promotion",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "x-publishable-api-key",
+            "value": "{{publishable_key}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/store/carts/{{cart_id}}/promotions",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "store",
+            "carts",
+            "{{cart_id}}",
+            "promotions"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"promo_codes\": [\n    \"{{promo_code}}\"\n  ]\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status 200', () => pm.response.to.have.status(200));",
+              "const c = pm.response.json().cart;",
+              "pm.test('10% off: discount 2.50, total 22.50', () => { pm.expect(c.discount_total).to.eql(2.5); pm.expect(c.total).to.eql(22.5); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Set address and email",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "x-publishable-api-key",
+            "value": "{{publishable_key}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/store/carts/{{cart_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "store",
+            "carts",
+            "{{cart_id}}"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"postman@example.com\",\n  \"shipping_address\": {\n    \"first_name\": \"Post\",\n    \"last_name\": \"Man\",\n    \"address_1\": \"Street 1\",\n    \"city\": \"Copenhagen\",\n    \"postal_code\": \"1000\",\n    \"country_code\": \"dk\"\n  }\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status 200', () => pm.response.to.have.status(200));",
+              "pm.test('address stored', () => pm.expect(pm.response.json().cart.shipping_address.country_code).to.eql('dk'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "List shipping options",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-publishable-api-key",
+            "value": "{{publishable_key}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/store/shipping-options?cart_id={{cart_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "store",
+            "shipping-options"
+          ],
+          "query": [
+            {
+              "key": "cart_id",
+              "value": "{{cart_id}}"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status 200', () => pm.response.to.have.status(200));",
+              "const o = pm.response.json().shipping_options.find(x => x.name === 'Standard Shipping');",
+              "pm.test('Standard Shipping offered', () => pm.expect(o).to.be.an('object'));",
+              "pm.collectionVariables.set('option_id', o.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Choose shipping",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "x-publishable-api-key",
+            "value": "{{publishable_key}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/store/carts/{{cart_id}}/shipping-methods",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "store",
+            "carts",
+            "{{cart_id}}",
+            "shipping-methods"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"option_id\": \"{{option_id}}\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status 200', () => pm.response.to.have.status(200));",
+              "pm.test('shipping 10.00, total 32.50', () => { const c = pm.response.json().cart; pm.expect(c.shipping_total).to.eql(10); pm.expect(c.total).to.eql(32.5); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Create payment collection",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "x-publishable-api-key",
+            "value": "{{publishable_key}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/store/payment-collections",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "store",
+            "payment-collections"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"cart_id\": \"{{cart_id}}\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status 200', () => pm.response.to.have.status(200));",
+              "pm.collectionVariables.set('payment_collection_id', pm.response.json().payment_collection.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Start system payment session",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "x-publishable-api-key",
+            "value": "{{publishable_key}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/store/payment-collections/{{payment_collection_id}}/payment-sessions",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "store",
+            "payment-collections",
+            "{{payment_collection_id}}",
+            "payment-sessions"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"provider_id\": \"pp_system_default\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Complete cart",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "x-publishable-api-key",
+            "value": "{{publishable_key}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/store/carts/{{cart_id}}/complete",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "store",
+            "carts",
+            "{{cart_id}}",
+            "complete"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status 200', () => pm.response.to.have.status(200));",
+              "const r = pm.response.json();",
+              "pm.test('an order was created', () => pm.expect(r.type).to.eql('order'));",
+              "pm.test('order total 32.50', () => pm.expect(r.order.total).to.eql(32.5));",
+              "pm.collectionVariables.set('order_id', r.order.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin sees the order",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{admin_token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/admin/orders/{{order_id}}?fields=%2Bemail",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "admin",
+            "orders",
+            "{{order_id}}"
+          ],
+          "query": [
+            {
+              "key": "fields",
+              "value": "%2Bemail"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status 200', () => pm.response.to.have.status(200));",
+              "pm.test('same e-mail and total', () => { const o = pm.response.json().order; pm.expect(o.email).to.eql('postman@example.com'); pm.expect(o.total).to.eql(32.5); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Clean up the promotion",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{admin_token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/admin/promotions/{{promo_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "admin",
+            "promotions",
+            "{{promo_id}}"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status 200', () => pm.response.to.have.status(200));",
+              "pm.test('deleted', () => pm.expect(pm.response.json().deleted).to.eql(true));"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "admin_token",
+      "value": ""
+    },
+    {
+      "key": "promo_code",
+      "value": ""
+    },
+    {
+      "key": "promo_id",
+      "value": ""
+    },
+    {
+      "key": "variant_id",
+      "value": ""
+    },
+    {
+      "key": "cart_id",
+      "value": ""
+    },
+    {
+      "key": "option_id",
+      "value": ""
+    },
+    {
+      "key": "payment_collection_id",
+      "value": ""
+    },
+    {
+      "key": "order_id",
+      "value": ""
+    }
+  ]
+}

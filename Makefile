@@ -44,3 +44,27 @@ docker-build: ## Build the test runner image
 
 docker-test: docker-build ## Run the suite in Docker on network qa-shop-net
 	docker run --rm --network qa-shop-net -v "$(abspath $(SUT_DIR))/.generated:/sut:ro" $(IMAGE) -n auto -q -p no:cacheprovider
+
+PK = $(shell grep '^SUT_PUBLISHABLE_KEY=' $(SUT_DIR)/.generated/sut.env | cut -d= -f2)
+ST = uv run schemathesis run contracts/openapi/store.openapi.yaml --url http://localhost:9000 \
+     -H x-publishable-api-key:$(PK) --checks all --max-examples 20 --workers 4 --generation-deterministic
+ST_STORE = $(ST) --include-method GET --baseline contracts/schemathesis-baseline.store.json
+ST_CARTS = $(ST) --include-path-regex ^/store/carts --baseline contracts/schemathesis-baseline.store-carts.json
+
+.PHONY: contract contract-update coverage
+contract: ## Schemathesis against the triaged baselines (fails only on NEW contract failures)
+	PYTHONUTF8=1 $(ST_STORE) --report junit,html --report-dir reports/schemathesis/store
+	PYTHONUTF8=1 $(ST_CARTS) --report junit,html --report-dir reports/schemathesis/store-carts
+
+contract-update: ## Merge new failures into the baselines (only after triage in docs/contract-findings.md)
+	PYTHONUTF8=1 $(ST_STORE) --baseline-update || true
+	PYTHONUTF8=1 $(ST_CARTS) --baseline-update || true
+	uv run python scripts/contract_triage.py
+
+coverage: ## Run the suite with call recording and write docs/api-coverage.md
+	rm -rf reports/calls && mkdir -p reports/calls
+	SHOP_API_RECORD_DIR=reports/calls uv run pytest -n auto -q -p no:randomly || true
+	uv run python scripts/api_coverage.py reports/calls
+
+newman: ## Postman smoke collection via Newman (HTML + JUnit in reports/newman)
+	cd postman && npm ci --no-audit --no-fund && sh run-newman.sh

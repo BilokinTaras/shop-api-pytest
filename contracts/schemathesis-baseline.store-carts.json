@@ -1,0 +1,546 @@
+{
+  "format_version": 1,
+  "schemathesis_version": "4.32.7",
+  "entries": [
+    {
+      "id": "842dfd",
+      "operation": "DELETE /store/carts/{id}/gift-cards",
+      "check": "content_type_conformance",
+      "failure": "UndefinedContentType",
+      "signature": "text/html; charset=utf-8",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "8deafc",
+      "operation": "DELETE /store/carts/{id}/line-items/{line_id}",
+      "check": "not_a_server_error",
+      "failure": "ServerError",
+      "signature": "500",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "b607e5",
+      "operation": "DELETE /store/carts/{id}/line-items/{line_id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/properties/completed_at/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "a0d3ea",
+      "operation": "DELETE /store/carts/{id}/line-items/{line_id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/properties/customer_id/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "3f4313",
+      "operation": "DELETE /store/carts/{id}/line-items/{line_id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/properties/email/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "f8185b",
+      "operation": "DELETE /store/carts/{id}/line-items/{line_id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/properties/metadata/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "f5b9ca",
+      "operation": "DELETE /store/carts/{id}/line-items/{line_id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/required",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "349130",
+      "operation": "DELETE /store/carts/{id}/line-items/{line_id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000003/required",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "eb228e",
+      "operation": "DELETE /store/carts/{id}/line-items/{line_id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000005/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "8c0fed",
+      "operation": "DELETE /store/carts/{id}/promotions",
+      "check": "not_a_server_error",
+      "failure": "ServerError",
+      "signature": "500",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "cba70a",
+      "operation": "DELETE /store/carts/{id}/promotions",
+      "check": "positive_data_acceptance",
+      "failure": "RejectedPositiveData",
+      "signature": "400",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "cb011f",
+      "operation": "DELETE /store/carts/{id}/promotions",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/properties/completed_at/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "15d84f",
+      "operation": "DELETE /store/carts/{id}/promotions",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/properties/customer_id/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "e250a1",
+      "operation": "DELETE /store/carts/{id}/promotions",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/properties/email/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "3b9419",
+      "operation": "DELETE /store/carts/{id}/promotions",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/properties/metadata/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "f96973",
+      "operation": "DELETE /store/carts/{id}/promotions",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/required",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "f11492",
+      "operation": "DELETE /store/carts/{id}/promotions",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000003/required",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "d36cc6",
+      "operation": "DELETE /store/carts/{id}/promotions",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000005/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "c53c67",
+      "operation": "GET /store/carts/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/completed_at/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "740b12",
+      "operation": "GET /store/carts/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/customer_id/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "2304fd",
+      "operation": "GET /store/carts/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/email/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "c3f500",
+      "operation": "GET /store/carts/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/metadata/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "1679e7",
+      "operation": "GET /store/carts/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/required",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "be13e6",
+      "operation": "GET /store/carts/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000004/required",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "548013",
+      "operation": "GET /store/carts/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000006/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "185ab7",
+      "operation": "POST /store/carts",
+      "check": "negative_data_rejection",
+      "failure": "AcceptedNegativeData",
+      "signature": "200",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "961034",
+      "operation": "POST /store/carts",
+      "check": "positive_data_acceptance",
+      "failure": "RejectedPositiveData",
+      "signature": "400",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "4f354a",
+      "operation": "POST /store/carts",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/completed_at/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "85c5ac",
+      "operation": "POST /store/carts",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/customer_id/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "105390",
+      "operation": "POST /store/carts",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/email/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "4279be",
+      "operation": "POST /store/carts",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/metadata/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "5ae82d",
+      "operation": "POST /store/carts",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/required",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "36c8c0",
+      "operation": "POST /store/carts",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000004/required",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "023e0c",
+      "operation": "POST /store/carts",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000006/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "209fbe",
+      "operation": "POST /store/carts",
+      "check": "unsupported_method",
+      "failure": "UnsupportedMethodResponse",
+      "signature": "wrong_status",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "738af0",
+      "operation": "POST /store/carts/{id}",
+      "check": "positive_data_acceptance",
+      "failure": "RejectedPositiveData",
+      "signature": "400",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "e0b8d0",
+      "operation": "POST /store/carts/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/properties/completed_at/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "2331a4",
+      "operation": "POST /store/carts/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/properties/customer_id/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "7d3901",
+      "operation": "POST /store/carts/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/properties/email/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "72bb24",
+      "operation": "POST /store/carts/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/properties/metadata/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "5f1f04",
+      "operation": "POST /store/carts/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/required",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "196c06",
+      "operation": "POST /store/carts/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000003/required",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "b65663",
+      "operation": "POST /store/carts/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000005/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "d1069a",
+      "operation": "POST /store/carts/{id}/complete",
+      "check": "positive_data_acceptance",
+      "failure": "RejectedPositiveData",
+      "signature": "400",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "bfe686",
+      "operation": "POST /store/carts/{id}/customer",
+      "check": "content_type_conformance",
+      "failure": "UndefinedContentType",
+      "signature": "application/json; charset=utf-8",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "456ec1",
+      "operation": "POST /store/carts/{id}/gift-cards",
+      "check": "content_type_conformance",
+      "failure": "UndefinedContentType",
+      "signature": "text/html; charset=utf-8",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "54cc0f",
+      "operation": "POST /store/carts/{id}/line-items",
+      "check": "positive_data_acceptance",
+      "failure": "RejectedPositiveData",
+      "signature": "400",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "f3004c",
+      "operation": "POST /store/carts/{id}/line-items/{line_id}",
+      "check": "positive_data_acceptance",
+      "failure": "RejectedPositiveData",
+      "signature": "400",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "ca679e",
+      "operation": "POST /store/carts/{id}/promotions",
+      "check": "not_a_server_error",
+      "failure": "ServerError",
+      "signature": "500",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "c28380",
+      "operation": "POST /store/carts/{id}/promotions",
+      "check": "positive_data_acceptance",
+      "failure": "RejectedPositiveData",
+      "signature": "400",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "7dc17c",
+      "operation": "POST /store/carts/{id}/promotions",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/completed_at/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "4ae30f",
+      "operation": "POST /store/carts/{id}/promotions",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/customer_id/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "52d35c",
+      "operation": "POST /store/carts/{id}/promotions",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/email/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "322666",
+      "operation": "POST /store/carts/{id}/promotions",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/metadata/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "83fdbe",
+      "operation": "POST /store/carts/{id}/promotions",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/required",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "a6fdeb",
+      "operation": "POST /store/carts/{id}/promotions",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000004/required",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "986c5c",
+      "operation": "POST /store/carts/{id}/promotions",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000006/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "c6ab2d",
+      "operation": "POST /store/carts/{id}/shipping-methods",
+      "check": "positive_data_acceptance",
+      "failure": "RejectedPositiveData",
+      "signature": "400",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "f6953e",
+      "operation": "POST /store/carts/{id}/store-credits",
+      "check": "content_type_conformance",
+      "failure": "UndefinedContentType",
+      "signature": "text/html; charset=utf-8",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "43f358",
+      "operation": "POST /store/carts/{id}/taxes",
+      "check": "positive_data_acceptance",
+      "failure": "RejectedPositiveData",
+      "signature": "400",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    }
+  ]
+}

@@ -1,0 +1,1788 @@
+{
+  "format_version": 1,
+  "schemathesis_version": "4.32.7",
+  "entries": [
+    {
+      "id": "c7b77b",
+      "operation": "GET /auth/customer/providers",
+      "check": "allow_header_conformance",
+      "failure": "AllowHeaderMismatch",
+      "signature": "|POST",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "84ec4c",
+      "operation": "GET /auth/customer/providers",
+      "check": "unsupported_method",
+      "failure": "UnsupportedMethodResponse",
+      "signature": "wrong_status",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "f6e669",
+      "operation": "GET /auth/mfa/factors",
+      "check": "content_type_conformance",
+      "failure": "UndefinedContentType",
+      "signature": "application/json; charset=utf-8",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "cb3409",
+      "operation": "GET /auth/mfa/factors",
+      "check": "unsupported_method",
+      "failure": "UnsupportedMethodResponse",
+      "signature": "wrong_status",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "5d380c",
+      "operation": "GET /store/collections",
+      "check": "not_a_server_error",
+      "failure": "ServerError",
+      "signature": "500",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "d3bf88",
+      "operation": "GET /store/collections",
+      "check": "positive_data_acceptance",
+      "failure": "RejectedPositiveData",
+      "signature": "400",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "c40246",
+      "operation": "GET /store/collections",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/properties/external_id/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "5b7868",
+      "operation": "GET /store/collections",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/required",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "09e7fb",
+      "operation": "GET /store/collections",
+      "check": "unsupported_method",
+      "failure": "UnsupportedMethodResponse",
+      "signature": "wrong_status",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "569935",
+      "operation": "GET /store/collections/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/external_id/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "c1a74e",
+      "operation": "GET /store/collections/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/required",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "162194",
+      "operation": "GET /store/currencies",
+      "check": "not_a_server_error",
+      "failure": "ServerError",
+      "signature": "500",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "6c8881",
+      "operation": "GET /store/currencies",
+      "check": "positive_data_acceptance",
+      "failure": "RejectedPositiveData",
+      "signature": "400",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "b6c3ef",
+      "operation": "GET /store/currencies",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/required",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "a1011a",
+      "operation": "GET /store/currencies",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "2175a1",
+      "operation": "GET /store/currencies",
+      "check": "unsupported_method",
+      "failure": "UnsupportedMethodResponse",
+      "signature": "wrong_status",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "275b06",
+      "operation": "GET /store/currencies/{code}",
+      "check": "positive_data_acceptance",
+      "failure": "RejectedPositiveData",
+      "signature": "400",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "f8eeab",
+      "operation": "GET /store/currencies/{code}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/required",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "d965b7",
+      "operation": "GET /store/customers/me",
+      "check": "content_type_conformance",
+      "failure": "UndefinedContentType",
+      "signature": "application/json; charset=utf-8",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "18a5db",
+      "operation": "GET /store/customers/me/addresses",
+      "check": "content_type_conformance",
+      "failure": "UndefinedContentType",
+      "signature": "application/json; charset=utf-8",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "51a602",
+      "operation": "GET /store/customers/me/addresses/{address_id}",
+      "check": "content_type_conformance",
+      "failure": "UndefinedContentType",
+      "signature": "application/json; charset=utf-8",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "1172aa",
+      "operation": "GET /store/gift-cards/{idOrCode}",
+      "check": "content_type_conformance",
+      "failure": "UndefinedContentType",
+      "signature": "text/html; charset=utf-8",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "65c29d",
+      "operation": "GET /store/locales",
+      "check": "content_type_conformance",
+      "failure": "UndefinedContentType",
+      "signature": "text/html; charset=utf-8",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "dce4d3",
+      "operation": "GET /store/locales",
+      "check": "unsupported_method",
+      "failure": "UnsupportedMethodResponse",
+      "signature": "wrong_status",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "a9054b",
+      "operation": "GET /store/orders",
+      "check": "content_type_conformance",
+      "failure": "UndefinedContentType",
+      "signature": "application/json; charset=utf-8",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "d42599",
+      "operation": "GET /store/orders",
+      "check": "unsupported_method",
+      "failure": "UnsupportedMethodResponse",
+      "signature": "wrong_status",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "38646a",
+      "operation": "GET /store/payment-providers",
+      "check": "not_a_server_error",
+      "failure": "ServerError",
+      "signature": "500",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "32c5bb",
+      "operation": "GET /store/payment-providers",
+      "check": "positive_data_acceptance",
+      "failure": "RejectedPositiveData",
+      "signature": "400",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "15d6ca",
+      "operation": "GET /store/payment-providers",
+      "check": "unsupported_method",
+      "failure": "UnsupportedMethodResponse",
+      "signature": "wrong_status",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "553b44",
+      "operation": "GET /store/product-categories",
+      "check": "not_a_server_error",
+      "failure": "ServerError",
+      "signature": "500",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "17ba69",
+      "operation": "GET /store/product-categories",
+      "check": "positive_data_acceptance",
+      "failure": "RejectedPositiveData",
+      "signature": "400",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "7764b7",
+      "operation": "GET /store/product-categories",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/metadata/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "c92d5a",
+      "operation": "GET /store/product-categories",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/parent_category/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "95305e",
+      "operation": "GET /store/product-categories",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/parent_category_id/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "94cda7",
+      "operation": "GET /store/product-categories",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/required",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "bd38b9",
+      "operation": "GET /store/product-categories",
+      "check": "unsupported_method",
+      "failure": "UnsupportedMethodResponse",
+      "signature": "wrong_status",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "301a21",
+      "operation": "GET /store/product-categories/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/required",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "8eee65",
+      "operation": "GET /store/product-categories/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/metadata/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "2f5634",
+      "operation": "GET /store/product-categories/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/parent_category/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "bd96cc",
+      "operation": "GET /store/product-categories/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/parent_category_id/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "0bd888",
+      "operation": "GET /store/product-categories/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/required",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "521d34",
+      "operation": "GET /store/product-options",
+      "check": "not_a_server_error",
+      "failure": "ServerError",
+      "signature": "500",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "3e5049",
+      "operation": "GET /store/product-options",
+      "check": "positive_data_acceptance",
+      "failure": "RejectedPositiveData",
+      "signature": "400",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "7a8baa",
+      "operation": "GET /store/product-options",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/properties/metadata/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "ec3f1a",
+      "operation": "GET /store/product-options",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/required",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "95a440",
+      "operation": "GET /store/product-options",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/deleted_at/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "57413a",
+      "operation": "GET /store/product-options",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/metadata/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "0ddd45",
+      "operation": "GET /store/product-options",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/rank/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "0bc76a",
+      "operation": "GET /store/product-options",
+      "check": "unsupported_method",
+      "failure": "UnsupportedMethodResponse",
+      "signature": "wrong_status",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "6ba4de",
+      "operation": "GET /store/product-options/{id}",
+      "check": "positive_data_acceptance",
+      "failure": "RejectedPositiveData",
+      "signature": "400",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "1cbd9c",
+      "operation": "GET /store/product-options/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/metadata/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "9ae279",
+      "operation": "GET /store/product-options/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/required",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "2d995a",
+      "operation": "GET /store/product-options/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000003/properties/deleted_at/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "270055",
+      "operation": "GET /store/product-options/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000003/properties/metadata/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "884e98",
+      "operation": "GET /store/product-options/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000003/properties/rank/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "e9ab23",
+      "operation": "GET /store/product-tags",
+      "check": "not_a_server_error",
+      "failure": "ServerError",
+      "signature": "500",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "2472b6",
+      "operation": "GET /store/product-tags",
+      "check": "positive_data_acceptance",
+      "failure": "RejectedPositiveData",
+      "signature": "400",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "03e353",
+      "operation": "GET /store/product-tags",
+      "check": "unsupported_method",
+      "failure": "UnsupportedMethodResponse",
+      "signature": "wrong_status",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "a625ef",
+      "operation": "GET /store/product-tags/{id}",
+      "check": "positive_data_acceptance",
+      "failure": "RejectedPositiveData",
+      "signature": "400",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "39764e",
+      "operation": "GET /store/product-types",
+      "check": "not_a_server_error",
+      "failure": "ServerError",
+      "signature": "500",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "2537ce",
+      "operation": "GET /store/product-types",
+      "check": "positive_data_acceptance",
+      "failure": "RejectedPositiveData",
+      "signature": "400",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "e0346a",
+      "operation": "GET /store/product-types",
+      "check": "unsupported_method",
+      "failure": "UnsupportedMethodResponse",
+      "signature": "wrong_status",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "07e0e5",
+      "operation": "GET /store/product-types/{id}",
+      "check": "positive_data_acceptance",
+      "failure": "RejectedPositiveData",
+      "signature": "400",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "3ebe0e",
+      "operation": "GET /store/product-variants",
+      "check": "not_a_server_error",
+      "failure": "ServerError",
+      "signature": "500",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "6afb8b",
+      "operation": "GET /store/product-variants",
+      "check": "positive_data_acceptance",
+      "failure": "RejectedPositiveData",
+      "signature": "400",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "c776df",
+      "operation": "GET /store/product-variants",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/properties/barcode/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "9274d7",
+      "operation": "GET /store/product-variants",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/properties/ean/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "c4bc5a",
+      "operation": "GET /store/product-variants",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/properties/height/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "975a25",
+      "operation": "GET /store/product-variants",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/properties/hs_code/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "8024a1",
+      "operation": "GET /store/product-variants",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/properties/length/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "aee0a5",
+      "operation": "GET /store/product-variants",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/properties/material/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "2dd043",
+      "operation": "GET /store/product-variants",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/properties/metadata/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "85b528",
+      "operation": "GET /store/product-variants",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/properties/mid_code/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "37f9aa",
+      "operation": "GET /store/product-variants",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/properties/origin_country/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "8e08dc",
+      "operation": "GET /store/product-variants",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/properties/sku/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "df403c",
+      "operation": "GET /store/product-variants",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/properties/thumbnail/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "28636f",
+      "operation": "GET /store/product-variants",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/properties/upc/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "e96c55",
+      "operation": "GET /store/product-variants",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/properties/weight/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "947b17",
+      "operation": "GET /store/product-variants",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/properties/width/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "be1e90",
+      "operation": "GET /store/product-variants",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/required",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "b44a7e",
+      "operation": "GET /store/product-variants",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/deleted_at/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "d253a8",
+      "operation": "GET /store/product-variants",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/metadata/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "f78be7",
+      "operation": "GET /store/product-variants",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/rank/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "a1035a",
+      "operation": "GET /store/product-variants",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000004/properties/deleted_at/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "534032",
+      "operation": "GET /store/product-variants",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000004/properties/metadata/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "1816d9",
+      "operation": "GET /store/product-variants",
+      "check": "unsupported_method",
+      "failure": "UnsupportedMethodResponse",
+      "signature": "wrong_status",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "b19613",
+      "operation": "GET /store/products",
+      "check": "not_a_server_error",
+      "failure": "ServerError",
+      "signature": "500",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "164548",
+      "operation": "GET /store/products",
+      "check": "positive_data_acceptance",
+      "failure": "RejectedPositiveData",
+      "signature": "400",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "905a4e",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/collection_id/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "54b7f3",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/description/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "49ee8e",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/height/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "0647cb",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/hs_code/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "5a78a4",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/length/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "1d280c",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/material/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "4b1f01",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/mid_code/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "3d6c08",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/origin_country/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "fcf056",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/subtitle/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "a88d36",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/thumbnail/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "f5cf60",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/type_id/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "1f1f17",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/weight/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "5a1a49",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/width/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "848266",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/required",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "49599b",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000003/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "9b1eac",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000004/properties/deleted_at/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "01219a",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000004/properties/metadata/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "83ca60",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000005/properties/deleted_at/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "9db5c1",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000005/properties/metadata/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "eba3a3",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000005/properties/rank/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "0032e9",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000015/properties/barcode/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "7b5ffa",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000015/properties/deleted_at/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "f9af96",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000015/properties/ean/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "03ebda",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000015/properties/height/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "4dcea5",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000015/properties/hs_code/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "b24c81",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000015/properties/length/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "4444d9",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000015/properties/material/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "70dd52",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000015/properties/metadata/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "df4081",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000015/properties/mid_code/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "d8862f",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000015/properties/origin_country/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "6f116f",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000015/properties/sku/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "1b1a1a",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000015/properties/thumbnail/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "de6063",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000015/properties/upc/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "16a8ab",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000015/properties/weight/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "197a30",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000015/properties/width/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "0bf83c",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000016/required",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "875a8b",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000016/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "4d438d",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000017/properties/deleted_at/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "284126",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000017/properties/external_id/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "1525b1",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000017/properties/metadata/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "32e039",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000017/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "140e9f",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000019/properties/deleted_at/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "9d1950",
+      "operation": "GET /store/products",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000019/properties/metadata/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "eab444",
+      "operation": "GET /store/products",
+      "check": "unsupported_method",
+      "failure": "UnsupportedMethodResponse",
+      "signature": "wrong_status",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "a276bf",
+      "operation": "GET /store/products/{id}",
+      "check": "positive_data_acceptance",
+      "failure": "RejectedPositiveData",
+      "signature": "400",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "bfba36",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/collection_id/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "c0497d",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/description/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "a87464",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/height/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "22a0d1",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/hs_code/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "e9b324",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/length/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "82b63c",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/material/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "621783",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/mid_code/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "cb1047",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/origin_country/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "fcb76a",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/subtitle/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "1f8be8",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/thumbnail/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "9667c2",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/type_id/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "847964",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/weight/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "2671db",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/properties/width/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "647725",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/required",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "a7d598",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000003/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "c890c7",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000004/properties/deleted_at/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "ef2558",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000004/properties/metadata/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "7da48e",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000005/properties/deleted_at/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "658392",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000005/properties/metadata/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "0774ad",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000005/properties/rank/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "6775ca",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000015/properties/barcode/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "2ec636",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000015/properties/deleted_at/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "572aac",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000015/properties/ean/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "e3eee1",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000015/properties/height/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "e87b05",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000015/properties/hs_code/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "b16995",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000015/properties/length/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "64b856",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000015/properties/material/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "040edd",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000015/properties/metadata/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "18c158",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000015/properties/mid_code/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "326a8d",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000015/properties/origin_country/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "12ed54",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000015/properties/sku/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "b0ab06",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000015/properties/thumbnail/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "b1e5d5",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000015/properties/upc/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "9bed8a",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000015/properties/weight/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "2ae1c2",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000015/properties/width/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "0e94b4",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000015/required",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "053afe",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000016/required",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "899367",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000016/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "dac965",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000017/properties/deleted_at/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "b33676",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000017/properties/external_id/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "4b0cbb",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000017/properties/metadata/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "962696",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000017/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "949611",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000019/properties/deleted_at/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "c7d43d",
+      "operation": "GET /store/products/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000019/properties/metadata/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "512a91",
+      "operation": "GET /store/regions",
+      "check": "not_a_server_error",
+      "failure": "ServerError",
+      "signature": "500",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "074e82",
+      "operation": "GET /store/regions",
+      "check": "positive_data_acceptance",
+      "failure": "RejectedPositiveData",
+      "signature": "400",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "9c17fe",
+      "operation": "GET /store/regions",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/properties/metadata/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "c435d3",
+      "operation": "GET /store/regions",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/required",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "9b3bb9",
+      "operation": "GET /store/regions",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/required",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "2c2aaf",
+      "operation": "GET /store/regions",
+      "check": "unsupported_method",
+      "failure": "UnsupportedMethodResponse",
+      "signature": "wrong_status",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "dc71c0",
+      "operation": "GET /store/regions/{id}",
+      "check": "positive_data_acceptance",
+      "failure": "RejectedPositiveData",
+      "signature": "400",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "70bf63",
+      "operation": "GET /store/regions/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/properties/metadata/type",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "788326",
+      "operation": "GET /store/regions/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/required",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "ae121e",
+      "operation": "GET /store/regions/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000002/required",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "553e48",
+      "operation": "GET /store/return-reasons",
+      "check": "not_a_server_error",
+      "failure": "ServerError",
+      "signature": "500",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "08865c",
+      "operation": "GET /store/return-reasons",
+      "check": "positive_data_acceptance",
+      "failure": "RejectedPositiveData",
+      "signature": "400",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "7ba637",
+      "operation": "GET /store/return-reasons",
+      "check": "unsupported_method",
+      "failure": "UnsupportedMethodResponse",
+      "signature": "wrong_status",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "4346c9",
+      "operation": "GET /store/return-reasons/{id}",
+      "check": "positive_data_acceptance",
+      "failure": "RejectedPositiveData",
+      "signature": "400",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "6ef835",
+      "operation": "GET /store/return-reasons/{id}",
+      "check": "response_schema_conformance",
+      "failure": "JsonSchemaError",
+      "signature": "x-bundled/schema000001/required",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "84467b",
+      "operation": "GET /store/shipping-options",
+      "check": "positive_data_acceptance",
+      "failure": "RejectedPositiveData",
+      "signature": "400",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "95d8bb",
+      "operation": "GET /store/shipping-options",
+      "check": "unsupported_method",
+      "failure": "UnsupportedMethodResponse",
+      "signature": "wrong_status",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "1f31e1",
+      "operation": "GET /store/store-credit-accounts",
+      "check": "content_type_conformance",
+      "failure": "UndefinedContentType",
+      "signature": "text/html; charset=utf-8",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "b38c58",
+      "operation": "GET /store/store-credit-accounts",
+      "check": "status_code_conformance",
+      "failure": "UndefinedStatusCode",
+      "signature": "431",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "d11c1b",
+      "operation": "GET /store/store-credit-accounts",
+      "check": "unsupported_method",
+      "failure": "UnsupportedMethodResponse",
+      "signature": "wrong_status",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    },
+    {
+      "id": "78c6e1",
+      "operation": "GET /store/store-credit-accounts/{id}",
+      "check": "content_type_conformance",
+      "failure": "UndefinedContentType",
+      "signature": "text/html; charset=utf-8",
+      "first_seen": "2026-11-01",
+      "last_seen": "2026-11-01"
+    }
+  ]
+}
