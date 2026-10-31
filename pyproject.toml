@@ -1,0 +1,87 @@
+[project]
+name = "shop-api-pytest"
+version = "0.1.0"
+description = "pytest + httpx API test suite for the Medusa commerce platform: contract, pricing oracle, access matrix, database and concurrency checks."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.12"
+dependencies = [
+    "pytest>=9.2",
+    "httpx>=0.28.1",
+    "pydantic>=2.14",
+    "pydantic-settings>=2.16",
+    "faker>=40.44",
+    "pytest-xdist>=3.8",
+    "allure-pytest>=2.16",
+    "pyyaml>=6.0.3",
+    "tenacity>=9.2",
+    "psycopg[binary]>=3.3.6",
+    "hypothesis>=6.170",
+    "schemathesis>=4.32",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.17.3",
+    "mypy>=2.4.1",
+    "pre-commit>=4.7",
+    "types-pyyaml>=6.0.12.20261030",
+]
+
+[tool.uv]
+package = true
+
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/shop_api"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "S", "SIM", "RUF", "PT", "C4", "PL", "DTZ", "T20"]
+# E501: line length is enforced by `ruff format`; long string literals are allowed.
+ignore = ["E501", "PLR0913", "PLR2004"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "S105", "S106", "S311"]
+"src/shop_api/factories.py" = ["S311"]
+
+[tool.mypy]
+strict = true
+python_version = "3.12"
+files = ["src", "tests"]
+plugins = ["pydantic.mypy"]
+explicit_package_bases = true
+mypy_path = ["src", "."]
+
+[[tool.mypy.overrides]]
+module = ["allure", "allure_commons.*", "schemathesis.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+# allure-pytest ships no type hints; its decorators are the only untyped calls in tests.
+module = ["tests.*", "conftest"]
+disallow_untyped_decorators = false
+disallow_untyped_calls = false
+
+[tool.pytest.ini_options]
+addopts = "-ra --strict-markers --strict-config --alluredir=allure-results"
+xfail_strict = true
+testpaths = ["tests"]
+markers = [
+    "smoke: fast checks that the stand and the suite are wired correctly",
+    "functional: positive business flows",
+    "negative: invalid input, missing auth, wrong state",
+    "calculations: pricing oracle scenarios against the API",
+    "contract: OpenAPI contract and fuzzing",
+    "authz: role x operation access matrix",
+    "db: read-only database state checks",
+    "concurrency: parallel requests, idempotency, overselling",
+    "unit: tests of the test framework itself (no stand needed)",
+    "finding(id): links a test to a documented finding in docs/findings.md",
+]
