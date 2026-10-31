@@ -26,6 +26,7 @@ dev = [
     "mypy>=2.4.1",
     "pre-commit>=4.7",
     "types-pyyaml>=6.0.12.20261030",
+    "pytest-randomly>=5.0.0",
 ]
 
 [tool.uv]

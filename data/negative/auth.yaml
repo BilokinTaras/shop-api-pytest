@@ -1,0 +1,34 @@
+# Negative cases for authentication and the customer profile.
+# Equivalence partitioning on e-mail format and credential validity; error guessing on tokens.
+
+registration_email:
+  technique: Equivalence partitioning (valid e-mail / invalid formats)
+  cases:
+    - { id: no-at-sign, email: "plainaddress", finding: BUG-API-002 }
+    - { id: no-domain, email: "user@", finding: BUG-API-002 }
+    - { id: no-local-part, email: "@example.com", finding: BUG-API-002 }
+    - { id: spaces, email: "user name@example.com", finding: BUG-API-002 }
+
+profile_email:
+  technique: Equivalence partitioning (valid e-mail / invalid formats) on POST /store/customers
+  cases:
+    - { id: no-at-sign, email: "plainaddress" }
+    - { id: no-domain, email: "user@" }
+    - { id: double-at, email: "a@@example.com" }
+
+login:
+  technique: Equivalence partitioning on credentials
+  cases:
+    - { id: wrong-password, kind: wrong_password, status: 401, type: unauthorized, message: "Invalid email or password" }
+    - { id: unknown-email, kind: unknown_email, status: 401, type: unauthorized, message: "Invalid email or password" }
+    - { id: empty-password, kind: empty_password, status: 401, type: unauthorized }
+    - { id: missing-password, kind: missing_password, status: 400, type: invalid_data, finding: BUG-API-003 }
+
+tokens:
+  technique: Error guessing on bearer tokens for GET /store/customers/me
+  cases:
+    - { id: no-token, token: none }
+    - { id: garbage, token: garbage }
+    - { id: expired, token: expired }
+    - { id: wrong-signature, token: wrong_signature }
+    - { id: alg-none, token: alg_none }

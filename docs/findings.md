@@ -1,0 +1,50 @@
+# Findings
+
+Defects in Medusa 2.22.2 found by this suite. Each is encoded as a test that asserts the **correct**
+behaviour and is marked `xfail(strict=True)` with the finding ID (`pytest.mark.finding`): it passes as
+"xfailed" while the defect exists and turns the suite red the moment the defect is fixed, so the mark
+is removed deliberately. Tests are never bent to match the current behaviour.
+
+Environment: `shop-sut` (Medusa `@medusajs/*` 2.22.2, dtc-starter `d4e4dae`, production mode,
+PostgreSQL 17.11, Redis 7.4.12), Python 3.12.9, httpx 0.28.1. Found 2026-10-31.
+
+| ID | Finding | Severity | Priority | Tests |
+|---|---|---|---|---|
+| BUG-API-001 | Negative `limit`/`offset` on `GET /store/products` → `500 unknown_error` instead of `400 invalid_data` (also reported by the UI suite as BUG-E2E-001) | Minor | Medium | `test_catalog_query_validation[limit-minus-one, offset-minus-one]` |
+| BUG-API-002 | `POST /auth/customer/emailpass/register` issues a token for strings that are not e-mails (`plainaddress`, `user@`, `@example.com`, `user name@example.com`) | Minor | Low | `test_registration_rejects_invalid_email[*]` |
+| BUG-API-003 | Login or registration without `password` → `401 unauthorized "Password should be a string"` instead of `400 invalid_data` | Trivial | Low | `test_login_with_bad_credentials[missing-password]` |
+| BUG-API-004 | `POST` and `DELETE /store/carts/{id}/promotions` on an unknown cart → `500 unknown_error`; every other cart sub-resource answers `404 not_found` | Minor | Medium | `test_unknown_ids[add-/remove-promotion-on-unknown-cart]` |
+| BUG-API-005 | Fractional numbers are accepted and silently coerced, differently per field: `limit=1.5` → 1 product (truncated), line item `quantity: 1.5` → **2 units charged** (rounded up) | Minor | Medium | `test_catalog_query_validation[limit-decimal]`, `test_line_item_validation[quantity-decimal]` |
+
+## Details
+
+### BUG-API-004 — 500 on promotions of an unknown cart
+
+```
+POST   /store/carts/cart_does_not_exist/promotions  {"promo_codes":["X"]}  → 500 {"type":"unknown_error"}
+DELETE /store/carts/cart_does_not_exist/promotions  {"promo_codes":["X"]}  → 500 {"type":"unknown_error"}
+POST   /store/carts/cart_does_not_exist/line-items        → 404 {"type":"not_found","message":"Cart with id ... not found"}
+POST   /store/carts/cart_does_not_exist/shipping-methods  → 404 {"type":"not_found","message":"Cart id not found: cart_does_not_exist"}
+POST   /store/carts/cart_does_not_exist/complete          → 404 {"type":"not_found"}
+```
+
+Expected: `404 not_found` like the sibling endpoints. Impact: an expired cart cookie on the storefront
+produces a server error in monitoring instead of a clean "cart not found".
+
+### BUG-API-005 — silent coercion of fractional numbers
+
+```
+GET  /store/products?limit=1.5                                  → 200, "limit": 1, one product
+POST /store/carts/{id}/line-items {"variant_id":"…","quantity":1.5} → 200, item quantity 2, item_subtotal 25.00 (2 × 12.50)
+```
+
+Expected: `400 invalid_data` for a non-integer quantity or page size (the error for `quantity: "two"`
+already says the field must be a number; an integer is implied by the domain). Impact: a client bug that
+sends a fraction buys more than requested; the two endpoints coerce in opposite directions.
+
+## Observed, not a defect
+
+- Re-registering an existing e-mail with the **same** password returns a token (one e-mail can hold
+  several actor types); with a different password it is refused (`401 "Identity with email already exists"`).
+- Completing the same cart twice returns the same order (idempotent).
+- `quantity` above available stock → `400 not_allowed "Some variant does not have the required inventory"`.

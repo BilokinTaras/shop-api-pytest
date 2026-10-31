@@ -178,8 +178,17 @@ class CompletedCartError(BaseModel):
     error: Loose
 
 
+class OrderSummary(Loose):
+    """Order as returned by list endpoints: the default fields there omit most totals."""
+
+    id: str = Field(pattern=r"^order_")
+    display_id: int = Field(gt=0)
+    status: str
+    total: Decimal
+
+
 class OrderList(Loose):
-    orders: list[Order]
+    orders: list[OrderSummary]
     count: int
 
 

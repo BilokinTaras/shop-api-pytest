@@ -53,7 +53,7 @@ def faker(request: pytest.FixtureRequest) -> Faker:
 
 
 @dataclass(frozen=True)
-class TestCustomer:
+class CustomerSession:
     profile: Customer
     email: str
     password: str
@@ -61,27 +61,27 @@ class TestCustomer:
     store: StoreClient
 
 
-CustomerFactory = Callable[[], TestCustomer]
+CustomerFactory = Callable[[], CustomerSession]
 
 
 @pytest.fixture
 def make_customer(store: StoreClient, auth: AuthClient, faker: Faker) -> CustomerFactory:
     """Registers fresh customers that belong to the calling test only."""
 
-    def _make() -> TestCustomer:
+    def _make() -> CustomerSession:
         email = unique_email("qa-py-customer")
         registration = auth.register_customer(email, TEST_PASSWORD)
         profile = store.as_customer(registration).create_customer(
             email, faker.first_name(), faker.last_name()
         )
         token = auth.login("customer", email, TEST_PASSWORD)
-        return TestCustomer(profile, email, TEST_PASSWORD, token, store.as_customer(token))
+        return CustomerSession(profile, email, TEST_PASSWORD, token, store.as_customer(token))
 
     return _make
 
 
 @pytest.fixture
-def customer(make_customer: CustomerFactory) -> TestCustomer:
+def customer(make_customer: CustomerFactory) -> CustomerSession:
     return make_customer()
 
 

@@ -1,0 +1,48 @@
+# Negative cases for the Store API, expressed as test design tables.
+# Each case: id (readable pytest id), technique, request, expected status / error type / message pattern.
+# Placeholders resolved at run time: {cart_id} fresh cart, {variant_id} QA Mug variant,
+# {sold_out_variant_id} QA Sold Out variant, {region_id} Europe region.
+# A case with `finding:` encodes the correct behaviour of a documented defect and is a strict xfail.
+
+catalog_query:
+  technique: Boundary value analysis on limit/offset; equivalence partitioning on types
+  cases:
+    - { id: limit-not-a-number, params: { limit: abc }, status: 400, type: invalid_data, message: "limit" }
+    - { id: offset-not-a-number, params: { offset: x }, status: 400, type: invalid_data, message: "offset" }
+    - { id: limit-minus-one, params: { limit: -1 }, status: 400, type: invalid_data, finding: BUG-API-001 }
+    - { id: offset-minus-one, params: { offset: -1 }, status: 400, type: invalid_data, finding: BUG-API-001 }
+    - { id: limit-decimal, params: { limit: "1.5" }, status: 400, type: invalid_data, finding: BUG-API-005 }
+    - { id: unknown-order-field, params: { order: no_such_field }, status: 400, type: invalid_data }
+
+line_item_quantity:
+  technique: Boundary value analysis (valid partition starts at 1) and equivalence partitioning
+  cases:
+    - { id: quantity-minus-one, body: { variant_id: "{variant_id}", quantity: -1 }, status: 400, type: invalid_data, message: "quantity" }
+    - { id: quantity-zero, body: { variant_id: "{variant_id}", quantity: 0 }, status: 400, type: invalid_data, message: "quantity" }
+    - { id: quantity-string, body: { variant_id: "{variant_id}", quantity: "two" }, status: 400, type: invalid_data, message: "quantity" }
+    - { id: quantity-decimal, body: { variant_id: "{variant_id}", quantity: 1.5 }, status: 400, type: invalid_data, finding: BUG-API-005 }
+    - { id: quantity-missing, body: { variant_id: "{variant_id}" }, status: 400, type: invalid_data, message: "quantity" }
+    - { id: variant-missing, body: { quantity: 1 }, status: 400, type: invalid_data, message: "variant_id" }
+    - { id: variant-unknown, body: { variant_id: variant_does_not_exist, quantity: 1 }, status: 400, type: invalid_data, message: "variant_does_not_exist" }
+    - { id: variant-sold-out, body: { variant_id: "{sold_out_variant_id}", quantity: 1 }, status: 400, type: not_allowed, message: "inventory" }
+    - { id: quantity-above-stock, body: { variant_id: "{variant_id}", quantity: 1000001 }, status: 400, type: not_allowed, message: "inventory" }
+
+cart_create:
+  technique: Equivalence partitioning on region_id
+  cases:
+    - { id: region-unknown, body: { region_id: reg_does_not_exist }, status: 404, type: not_found }
+    - { id: region-wrong-type, body: { region_id: 123 }, status: 400, type: invalid_data, message: "region_id" }
+    - { id: email-invalid, body: { region_id: "{region_id}", email: not-an-email }, status: 400, type: invalid_data, message: "email" }
+    - { id: unknown-field, body: { region_id: "{region_id}", hacker: true }, status: 400, type: invalid_data, message: "hacker" }
+
+unknown_ids:
+  technique: Equivalence partitioning (existing vs non-existing resource)
+  cases:
+    - { id: product, method: GET, path: /store/products/prod_does_not_exist, status: 404, type: not_found }
+    - { id: region, method: GET, path: /store/regions/reg_does_not_exist, status: 404, type: not_found }
+    - { id: cart, method: GET, path: /store/carts/cart_does_not_exist, status: 404, type: not_found }
+    - { id: line-item-on-unknown-cart, method: POST, path: /store/carts/cart_does_not_exist/line-items, body: { variant_id: "{variant_id}", quantity: 1 }, status: 404, type: not_found }
+    - { id: shipping-method-on-unknown-cart, method: POST, path: /store/carts/cart_does_not_exist/shipping-methods, body: { option_id: so_x }, status: 404, type: not_found }
+    - { id: complete-unknown-cart, method: POST, path: /store/carts/cart_does_not_exist/complete, status: 404, type: not_found }
+    - { id: add-promotion-on-unknown-cart, method: POST, path: /store/carts/cart_does_not_exist/promotions, body: { promo_codes: [X] }, status: 404, type: not_found, finding: BUG-API-004 }
+    - { id: remove-promotion-on-unknown-cart, method: DELETE, path: /store/carts/cart_does_not_exist/promotions, body: { promo_codes: [X] }, status: 404, type: not_found, finding: BUG-API-004 }
