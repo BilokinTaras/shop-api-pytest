@@ -14,8 +14,8 @@ PostgreSQL 17.11, Redis 7.4.12), Python 3.12.9, httpx 0.28.1. Found 2026-10-31.
 | BUG-API-002 | `POST /auth/customer/emailpass/register` issues a token for strings that are not e-mails (`plainaddress`, `user@`, `@example.com`, `user name@example.com`) | Minor | Low | `test_registration_rejects_invalid_email[*]` |
 | BUG-API-003 | Login or registration without `password` → `401 unauthorized "Password should be a string"` instead of `400 invalid_data` | Trivial | Low | `test_login_with_bad_credentials[missing-password]` |
 | BUG-API-004 | `POST` and `DELETE /store/carts/{id}/promotions` on an unknown cart → `500 unknown_error`; every other cart sub-resource answers `404 not_found` | Minor | Medium | `test_unknown_ids[add-/remove-promotion-on-unknown-cart]` |
-| BUG-API-006 | Cart totals, order totals and payment collection amounts are not rounded to the currency's minor unit: 15 % off 3 × 9.99 + shipping gives a payment of **35.4745 EUR** | Major | High | `test_order_and_payment_amounts_are_in_minor_units` |
 | BUG-API-005 | Fractional numbers are accepted and silently coerced, differently per field: `limit=1.5` → 1 product (truncated), line item `quantity: 1.5` → **2 units charged** (rounded up) | Minor | Medium | `test_catalog_query_validation[limit-decimal]`, `test_line_item_validation[quantity-decimal]` |
+| BUG-API-006 | Cart totals, order totals and payment collection amounts are not rounded to the currency's minor unit: 15 % off 3 × 9.99 + shipping gives a payment of **35.4745 EUR** | Major | High | `test_order_and_payment_amounts_are_in_minor_units` |
 
 ## Details
 
@@ -57,8 +57,7 @@ Expected (this project's rounding policy, `docs/pricing-rules.md` §7): every am
 is expressed in whole minor units of the currency (EUR cents), so the order's books equal what a card
 processor can actually charge. Medusa's documentation does not define where rounding happens.
 Impact: with a real payment provider that charges whole cents, captured amounts and order totals can
-differ by up to half a cent per order; reconciliation and refunds inherit the difference. The storefront
-displays €35.47, so the shopper sees a different amount from the one stored. Severity Major because it
+differ by up to half a cent per order; reconciliation and refunds inherit the difference.  Severity Major because it
 concerns money and accounting, even though each difference is tiny.
 
 ## Observed, not a defect
