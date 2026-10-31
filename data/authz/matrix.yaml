@@ -1,0 +1,107 @@
+# Access matrix: role x operation. Resources in {braces} are created for every case and belong to
+# customer A. Roles: anonymous (publishable key only), customer_a, customer_b (both with key + their own
+# bearer token), admin (admin bearer token; the publishable key is sent too so Store routes can be reached).
+#
+# Expected values: an HTTP status, optionally with a class:
+#   allow / deny            — normal authorisation outcome
+#   design                  — allowed on purpose; Medusa treats the ID as a capability (documented)
+#   finding: BUG-API-NNN    — encodes the CORRECT outcome of a documented defect (strict xfail)
+# `mutates: true` operations get fresh resources per case; the others share one set per worker.
+
+roles: [anonymous, customer_a, customer_b, admin]
+
+operations:
+  - id: list-products
+    request: GET /store/products?limit=1&fields=id
+    expect: { anonymous: 200, customer_a: 200, customer_b: 200, admin: 200 }
+
+  - id: read-own-profile
+    request: GET /store/customers/me
+    expect: { anonymous: 401, customer_a: 200, customer_b: 200, admin: 401 }
+    note: customer_b gets their OWN profile — `me` is always the caller
+
+  - id: read-a-address
+    request: GET /store/customers/me/addresses/{address_a}
+    expect: { anonymous: 401, customer_a: 200, customer_b: 404, admin: 401 }
+
+  - id: update-a-address
+    mutates: true
+    request: POST /store/customers/me/addresses/{address_a}
+    body: { city: Odense }
+    expect: { anonymous: 401, customer_a: 200, customer_b: 404, admin: 401 }
+
+  - id: delete-a-address
+    mutates: true
+    request: DELETE /store/customers/me/addresses/{address_a}
+    expect: { anonymous: 401, customer_a: 200, customer_b: 404, admin: 401 }
+
+  - id: list-orders
+    request: GET /store/orders
+    expect: { anonymous: 401, customer_a: 200, customer_b: 200, admin: 401 }
+    check: customer_b's list must not contain order_a
+
+  - id: read-a-order-by-id
+    request: GET /store/orders/{order_a}
+    expect:
+      anonymous: { status: 200, class: design }
+      customer_a: 200
+      customer_b: { status: 200, class: design }
+      admin: { status: 200, class: design }
+    note: "Documented: 'doesn't require customer authentication, so that guest customers can view their order confirmation page'. The order ID (ULID) is the capability; it exposes e-mail and address to anyone holding it."
+
+  - id: read-a-cart
+    request: GET /store/carts/{cart_a}
+    expect:
+      anonymous: { status: 200, class: design }
+      customer_a: 200
+      customer_b: { status: 200, class: design }
+      admin: { status: 200, class: design }
+    note: Carts are addressed by ID without authentication (guest checkout); the cart ID is the capability.
+
+  - id: add-item-to-a-cart
+    mutates: true
+    request: POST /store/carts/{cart_a}/line-items
+    body: { variant_id: "{variant}", quantity: 1 }
+    expect:
+      anonymous: { status: 200, class: design }
+      customer_a: 200
+      customer_b: { status: 200, class: design }
+      admin: { status: 200, class: design }
+
+  - id: transfer-a-cart
+    mutates: true
+    request: POST /store/carts/{cart_a}/customer
+    expect:
+      anonymous: 401
+      customer_a: 200
+      customer_b: { status: 404, finding: BUG-API-010 }
+      admin: 401
+    note: "Documented use: move a guest cart to the customer who just logged in. A cart that already belongs to another registered customer should not be taken over."
+
+  - id: request-a-order-transfer
+    mutates: true
+    request: POST /store/orders/{order_a}/transfer/request
+    expect:
+      anonymous: 401
+      customer_b: { status: 200, class: design }
+      admin: 401
+    note: Creates a transfer request that the current owner must accept with a token sent by e-mail; nothing changes hands yet.
+
+  - id: admin-read-a-order
+    request: GET /admin/orders/{order_a}
+    expect: { anonymous: 401, customer_a: 401, customer_b: 401, admin: 200 }
+
+  - id: admin-list-customers
+    request: GET /admin/customers?limit=1
+    expect: { anonymous: 401, customer_a: 401, customer_b: 401, admin: 200 }
+
+  - id: admin-delete-promotion
+    mutates: true
+    request: DELETE /admin/promotions/{promotion}
+    expect: { anonymous: 401, customer_a: 401, customer_b: 401, admin: 200 }
+
+  - id: admin-create-product
+    request: POST /admin/products
+    body: { title: "QA Authz probe" }
+    expect: { anonymous: 401, customer_a: 401, customer_b: 401 }
+    note: Admin creation is covered elsewhere; here only the denials matter.
