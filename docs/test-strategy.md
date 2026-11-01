@@ -16,7 +16,7 @@ This repository is the **deep API layer** of the portfolio. UI journeys and API-
 | `authz` | 59 | One customer sees or changes another's data (BOLA) | Role × operation matrix in YAML |
 | `db` | 8 | API answers right but stores something else | Read-only SQL checks |
 | `concurrency` | 15 | Double orders, lost updates, overselling | Parallel requests behind a barrier, 5 repeats |
-| Schemathesis (not pytest) | 48 operations | Contract drift, 5xx on unexpected input | OpenAPI-driven fuzzing with triaged baselines |
+| Schemathesis (not pytest) | 47 operations | Contract drift, 5xx on unexpected input | OpenAPI-driven fuzzing with triaged baselines |
 | Newman | 14 requests | A Postman-based team's smoke flow | Chained collection |
 
 ## 2. Test data
@@ -61,7 +61,7 @@ and tax regions collided on a country between workers (now one country pair per 
 | Metric | Value |
 |---|---|
 | Tests | 237 = 218 passed + 19 strict xfail (10 product defects) |
-| Duration | 164 s sequential · 80–95 s with `-n auto` |
-| Stability | 8 consecutive parallel runs green after the isolation fixes; 3 random orders green |
+| Duration | 82 s with `-n auto` on 12 logical CPUs (committed run); sequential runs were slower but are not recorded |
+| Stability | repeat parallel runs and random orders were green after the isolation fixes; only the latest run is committed as evidence |
 | API coverage | Store 28 / 78 operations by tests (`docs/api-coverage.md`), 48 Store operations fuzzed |
 | Contract | 258 Schemathesis failures triaged, 0 unclassified |

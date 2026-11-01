@@ -9,7 +9,9 @@ checks — in Python with pytest, httpx and pydantic.
 ## In 30 seconds
 
 - **237 tests**, 218 passing and 19 strict expected failures that pin **10 real Medusa defects**; full run in
-  ~85 s in parallel (164 s sequential), stable over 8 consecutive parallel runs and random orders (2026-11-01).
+  **82 s in parallel** on 12 logical CPUs — the run's own output is committed in
+  [docs/verification/2026-11-01.md](docs/verification/2026-11-01.md). Repeat and random-order runs were
+  green during development; only the latest run is committed, so treat the rest as unverified.
 - **Pricing oracle:** discount and tax maths re-implemented with `Decimal` from Medusa's docs; **40 scenarios**
   (percentage, fixed, buy X get Y, thresholds, stacking, tax-inclusive) match the API to 1e-9, including the
   documentation's own examples. It also showed that Medusa charges sub-cent amounts (35.4745 EUR).
@@ -111,7 +113,7 @@ Full version: [docs/test-strategy.md](docs/test-strategy.md).
 | Access matrix incl. BOLA | 58 + 1 self-check |
 | Database state | 8 |
 | Concurrency | 15 |
-| API operations exercised | Store 28/78 by tests + 48 fuzzed; Admin 18/413 ([docs/api-coverage.md](docs/api-coverage.md)) |
+| API operations exercised | Store 29/78 by tests + 47 fuzzed; Admin 18/413 ([docs/api-coverage.md](docs/api-coverage.md)) |
 
 ## CI/CD
 

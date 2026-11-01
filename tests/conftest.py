@@ -17,7 +17,7 @@ from faker import Faker
 
 from shop_api.clients import AdminClient, AuthClient, StoreClient
 from shop_api.clients.base import JOURNAL
-from shop_api.config import Settings, get_settings
+from shop_api.config import Settings, SutNotRunningError, get_settings
 from shop_api.factories import TEST_PASSWORD, seeded_faker, unique_code, unique_email
 from shop_api.models import Customer, Promotion
 
@@ -109,12 +109,20 @@ def make_promotion(admin: AdminClient, settings: Settings) -> Iterator[Promotion
 
 
 def pytest_sessionstart(session: pytest.Session) -> None:
-    """Records versions for the Allure environment panel (reports/run-info.json, read by allurerc.mjs)."""
+    """Records versions for the Allure environment panel (reports/run-info.json, read by allurerc.mjs).
+
+    The unit tests must run without the stand, so a missing contract file is recorded instead of raising:
+    the suites that need the stand fail on their own fixtures, with a message that says how to start it.
+    """
     if hasattr(session.config, "workerinput"):  # only the xdist controller writes it
         return
+    try:
+        settings = get_settings()
+        stand = {"Medusa": settings.medusa_version, "Backend": settings.backend_url}
+    except SutNotRunningError:
+        stand = {"Medusa": "stand not running", "Backend": "stand not running"}
     info = {
-        "Medusa": get_settings().medusa_version,
-        "Backend": get_settings().backend_url,
+        **stand,
         "Python": platform.python_version(),
         "OS": f"{platform.system()} {platform.release()} ({platform.machine()})",
         **{name: version(name) for name in ("pytest", "httpx", "pydantic", "hypothesis", "schemathesis")},
