@@ -81,7 +81,7 @@ Documentation examples reproduced exactly (25 % tax, 100 cart, 10 off): tax-excl
 | Currency mismatch | Code accepted, discount 0, no message | Should the API reject the code so the shopper knows it does not apply? |
 | Stacking | All codes apply, non-compounding | Is stacking intended by default, or should codes be exclusive unless configured? |
 
-## Discrepancy log (stage 1.10)
+## Discrepancy log
 
 | Discrepancy | Classification | Resolution |
 |---|---|---|

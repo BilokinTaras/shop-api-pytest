@@ -27,5 +27,6 @@ history in `reports/allure-history.jsonl`.
 ## Consequences
 
 - `make report` = `npx allure generate allure-results -c allurerc.mjs`. Java is not required.
-- In CI (phase 2) the history file is cached between nightly runs to keep the trend on Pages.
+- In CI the nightly run downloads the history file from the previous night's Pages site before generating,
+  then publishes it with the report, so the trend survives fresh runners.
 - If an Allure 2-only feature becomes necessary, the results directory works with Allure 2 unchanged.

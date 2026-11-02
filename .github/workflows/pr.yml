@@ -58,9 +58,9 @@ jobs:
       - run: uv sync --frozen
 
       - name: Start the shop
-        uses: BilokinTaras/shop-sut/.github/actions/start-sut@main # zizmor: ignore[unpinned-uses] same owner; switches to the release tag
+        uses: BilokinTaras/shop-sut/.github/actions/start-sut@v1.0.0 # zizmor: ignore[unpinned-uses] same owner; the release tag pairs with image-tag
         with:
-          image-tag: main
+          image-tag: v1.0.0
 
       - name: pytest -m ${{ matrix.suite }}
         env:
@@ -85,6 +85,6 @@ jobs:
 
       - name: Stand logs on failure
         if: failure()
-        uses: BilokinTaras/shop-sut/.github/actions/collect-sut-logs@main # zizmor: ignore[unpinned-uses] same owner
+        uses: BilokinTaras/shop-sut/.github/actions/collect-sut-logs@v1.0.0 # zizmor: ignore[unpinned-uses] same owner, release tag
         with:
           name: shop-sut-logs-${{ matrix.suite }}

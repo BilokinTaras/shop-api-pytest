@@ -83,7 +83,7 @@ cart ID — which, by design, also lets them read and edit the cart.
   several actor types); with a different password it is refused (`401 "Identity with email already exists"`).
 - Completing the same cart twice returns the same order (idempotent).
 - `quantity` above available stock → `400 not_allowed "Some variant does not have the required inventory"`.
-- Concurrency (stage 1.12, 5 repeats each, plus 3 observed runs): 10 parallel adds of the same variant →
+- Concurrency (5 repeats each, plus 3 observed runs): 10 parallel adds of the same variant →
   8 accepted, 2 answered `409` (the cart lock waits about 2 s), and the cart holds exactly 8 — no lost
   update, same split every run. 5 parallel completions of one cart → all `200` with the same order, one
   row in `order_cart`. Two carts racing for the last item → exactly one order, `reserved ≤ stocked`.

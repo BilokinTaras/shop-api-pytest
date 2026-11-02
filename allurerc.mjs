@@ -11,7 +11,8 @@ const runInfo = existsSync("./reports/run-info.json")
 export default defineConfig({
   name: "shop-api-pytest · Medusa API suite",
   output: "./allure-report",
-  // Trend between local runs; CI keeps the same file between nightly runs (phase 2).
+  // Trend between runs. Locally the file stays in reports/; the nightly CI run restores it from the published
+  // Pages site before generating, so the trend survives fresh runners.
   historyPath: "./reports/allure-history.jsonl",
   variables: runInfo,
   categories: {
