@@ -53,6 +53,12 @@ operation/ID pair (observed once on 2026-11-01: SPEC-1 and SPEC-4 on `GET /store
 The procedure is: `make contract-update`, then confirm that `scripts/contract_triage.py` still reports
 **Unclassified: 0** — anything unclassified is a genuinely new failure and is investigated before merging.
 
+The first nightly CI run (2026-11-02), on a freshly bootstrapped stand, hit exactly this: two failures outside
+the baseline, both instances of known classes — FP-1 (`431` on a multi-kilobyte query to
+`GET /store/collections`) and SPEC-4 (`locale` rejected with 400 on `GET /store/orders/{id}`, an operation the
+local runs never got past 404 on). Each was read and classified by hand before it was added, and the triage
+script agrees. The suite itself in that run: 218 passed, 19 expected failures, the same as locally.
+
 ## How to run
 
 ```bash
@@ -65,16 +71,16 @@ uv run python scripts/contract_triage.py   # regenerate the table below
 
 <!-- generated: triage table -->
 
-Accepted failures: **258** across 2 runs (store, store-carts). Unclassified: **0**.
+Accepted failures: **260** across 2 runs (store, store-carts). Unclassified: **0**.
 
 | Category | Triage | Failures | Operations |
 |---|---|---:|---|
 | Accepted behaviour | ACC-1: undeclared HTTP methods get 404 from Express instead of 405 | 19 | `GET /auth/customer/providers`, `GET /auth/mfa/factors`, `GET /store/collections`, `GET /store/currencies`, `GET /store/locales`, `GET /store/orders` and 12 more |
-| False positive | FP-1: oversized generated header rejected by Node's parser (431) before Medusa | 1 | `GET /store/store-credit-accounts` |
+| False positive | FP-1: oversized generated header rejected by Node's parser (431) before Medusa | 2 | `GET /store/collections`, `GET /store/store-credit-accounts` |
 | Product defect (5xx) | BUG-API-001 / 004 / 007 / 008 — see the reproduction table | 14 | `DELETE /store/carts/{id}/line-items/{line_id}`, `DELETE /store/carts/{id}/promotions`, `GET /store/collections`, `GET /store/currencies`, `GET /store/payment-providers`, `GET /store/product-categories` and 8 more |
 | Spec defect | SPEC-1: nullable property not marked `nullable` | 150 | `DELETE /store/carts/{id}/line-items/{line_id}`, `DELETE /store/carts/{id}/promotions`, `GET /store/carts/{id}`, `GET /store/collections`, `GET /store/collections/{id}`, `GET /store/currencies` and 12 more |
 | Spec defect | SPEC-2: property marked required is not always returned | 32 | `DELETE /store/carts/{id}/line-items/{line_id}`, `DELETE /store/carts/{id}/promotions`, `GET /store/carts/{id}`, `GET /store/collections`, `GET /store/collections/{id}`, `GET /store/currencies` and 14 more |
-| Spec defect | SPEC-4: documented input rejected by the API | 28 | `DELETE /store/carts/{id}/promotions`, `GET /store/collections`, `GET /store/currencies`, `GET /store/currencies/{code}`, `GET /store/payment-providers`, `GET /store/product-categories` and 22 more |
+| Spec defect | SPEC-4: documented input rejected by the API | 29 | `DELETE /store/carts/{id}/promotions`, `GET /store/collections`, `GET /store/currencies`, `GET /store/currencies/{code}`, `GET /store/orders/{id}`, `GET /store/payment-providers` and 23 more |
 | Spec defect | SPEC-6: documented endpoint not present in this build (404 HTML) | 7 | `DELETE /store/carts/{id}/gift-cards`, `GET /store/gift-cards/{idOrCode}`, `GET /store/locales`, `GET /store/store-credit-accounts`, `GET /store/store-credit-accounts/{id}`, `POST /store/carts/{id}/gift-cards` and 1 more |
 | Spec defect | SPEC-7: 401 documented as text/plain, API returns JSON | 6 | `GET /auth/mfa/factors`, `GET /store/customers/me`, `GET /store/customers/me/addresses`, `GET /store/customers/me/addresses/{address_id}`, `GET /store/orders`, `POST /store/carts/{id}/customer` |
 | Spec defect | SPEC-5: API accepts input the schema forbids (e.g. `null` objects) | 1 | `POST /store/carts` |

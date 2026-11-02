@@ -12,5 +12,5 @@
 | Pydantic models | Written from captured responses of the pinned version, then corrected when reality differed (list endpoints omit most order totals; Medusa returns money with more than two decimals) |
 | Pricing oracle | Specified from Medusa's documentation **and** measured behaviour before any test compared it with the API; unit and property tests on the oracle alone. The property tests caught a precision artefact in the oracle itself, which is recorded as an oracle error, not as a product defect |
 | Findings | Each one reproduced by hand with a minimal request; deliberate behaviour (cart/order IDs as capabilities) checked against Medusa's documentation and source before deciding it was not a defect |
-| Fuzzing | Every one of 258 Schemathesis failures classified by a script with explicit rules; nothing accepted silently |
+| Fuzzing | Every one of 260 Schemathesis failures classified by a script with explicit rules; nothing accepted silently |
 | Flaky tests | Two intermittent failures under parallel runs were traced to test isolation and fixed, not retried |
