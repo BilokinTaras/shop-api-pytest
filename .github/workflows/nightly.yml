@@ -1,0 +1,119 @@
+name: Nightly
+
+# The whole suite — calculations, access matrix, database and concurrency included — plus contract fuzzing,
+# published as an Allure report with history on GitHub Pages.
+on:
+  schedule:
+    - cron: "23 2 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nightly
+  cancel-in-progress: false
+
+env:
+  PAGES_URL: https://bilokintaras.github.io/shop-api-pytest
+
+jobs:
+  suite:
+    name: full suite + Allure
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    outputs:
+      summary: ${{ steps.summary.outputs.line }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          python-version: "3.12"
+          enable-cache: true
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "22"
+          cache: npm
+      - run: uv sync --frozen
+      - run: npm ci --no-audit --no-fund
+
+      - name: Start the shop
+        uses: BilokinTaras/shop-sut/.github/actions/start-sut@main # zizmor: ignore[unpinned-uses] same owner; switches to the release tag
+        with:
+          image-tag: main
+
+      - name: Full suite
+        id: tests
+        run: uv run pytest -n auto -q --junitxml=reports/junit.xml
+
+      - name: Contract fuzzing against the triaged baselines
+        id: contract
+        if: always() && steps.tests.outcome != 'skipped'
+        run: make contract
+
+      # Allure 3 keeps its trend in one JSONL file. The previous night's copy is on Pages; without it the
+      # report simply starts a new history.
+      - name: Previous history from Pages
+        if: always()
+        run: |
+          mkdir -p reports
+          curl -sfL "$PAGES_URL/history/allure-history.jsonl" -o reports/allure-history.jsonl \
+            || echo "no published history yet"
+
+      - name: Allure report
+        if: always()
+        run: |
+          npx allure generate allure-results -c allurerc.mjs --clean -o allure-report
+          mkdir -p allure-report/history
+          cp reports/allure-history.jsonl allure-report/history/ 2>/dev/null || true
+
+      - name: Summary
+        id: summary
+        if: always()
+        env:
+          TESTS: ${{ steps.tests.outcome }}
+          CONTRACT: ${{ steps.contract.outcome }}
+        run: |
+          line=$(python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+          s = ET.parse("reports/junit.xml").getroot()
+          s = s if s.tag == "testsuite" else s.find("testsuite")
+          t, f, e, k = (int(s.get(x, 0)) for x in ("tests", "failures", "errors", "skipped"))
+          print(f"{t} tests: {t - f - e - k} passed, {k} expected failures, {f} failed, {e} errors")
+          PY
+          )
+          echo "line=$line" >> "$GITHUB_OUTPUT"
+          {
+            echo "### Nightly — $(date -u +%Y-%m-%d)"
+            echo
+            echo "- Suite: **$TESTS** — $line"
+            echo "- Contract fuzzing: **$CONTRACT**"
+            echo "- Report: $PAGES_URL/"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        if: always()
+        with:
+          path: allure-report
+
+      - name: Stand logs on failure
+        if: failure()
+        uses: BilokinTaras/shop-sut/.github/actions/collect-sut-logs@main # zizmor: ignore[unpinned-uses] same owner
+
+  publish:
+    name: Publish to Pages
+    needs: suite
+    if: always() && needs.suite.result != 'cancelled'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

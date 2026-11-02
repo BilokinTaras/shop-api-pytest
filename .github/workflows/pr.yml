@@ -1,0 +1,90 @@
+name: PR checks
+
+# Fast feedback for every change: static checks and the oracle's unit tests first (no stand needed), then the
+# suites that guard the API contract in parallel, each against its own freshly started shop.
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  static:
+    name: ruff · mypy · unit tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          python-version: "3.12"
+          enable-cache: true
+      - run: uv sync --frozen
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+      - run: uv run mypy
+      # The oracle and the framework's own tests must pass without a stand (SUT_ENV_FILE points nowhere).
+      - name: Unit tests, offline
+        env:
+          SUT_ENV_FILE: /nonexistent/sut.env
+        run: uv run pytest -m unit -q -p no:randomly
+
+  api:
+    name: ${{ matrix.suite }}
+    needs: static
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [smoke, functional, negative]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          python-version: "3.12"
+          enable-cache: true
+      - run: uv sync --frozen
+
+      - name: Start the shop
+        uses: BilokinTaras/shop-sut/.github/actions/start-sut@main # zizmor: ignore[unpinned-uses] same owner; switches to the release tag
+        with:
+          image-tag: main
+
+      - name: pytest -m ${{ matrix.suite }}
+        env:
+          SUITE: ${{ matrix.suite }}
+        run: uv run pytest -m "$SUITE" -n auto -q --junitxml="reports/junit-$SUITE.xml"
+
+      - name: Postman collection (Newman)
+        if: matrix.suite == 'smoke'
+        run: |
+          npm ci --no-audit --no-fund
+          make newman
+
+      - name: Results
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: results-${{ matrix.suite }}
+          path: |
+            allure-results/
+            reports/
+          retention-days: 14
+
+      - name: Stand logs on failure
+        if: failure()
+        uses: BilokinTaras/shop-sut/.github/actions/collect-sut-logs@main # zizmor: ignore[unpinned-uses] same owner
+        with:
+          name: shop-sut-logs-${{ matrix.suite }}

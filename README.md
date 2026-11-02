@@ -22,8 +22,9 @@ checks — in Python with pytest, httpx and pydantic.
 
 ## Live reports
 
-Allure on GitHub Pages arrives with publication (see Roadmap). Locally: `make report` →
-`allure-report/index.html` (screenshot below from a real run).
+**Allure report of the nightly run, with history:** https://bilokintaras.github.io/shop-api-pytest/
+(published by [`nightly.yml`](.github/workflows/nightly.yml) once its first run is green). Locally:
+`make report` → `allure-report/index.html` (screenshot below from a real local run).
 
 ![Allure report](docs/img/allure-overview.png)
 
@@ -118,9 +119,14 @@ Full version: [docs/test-strategy.md](docs/test-strategy.md).
 
 ## CI/CD
 
-Planned with publication: PR — ruff, mypy, then smoke, functional and negative in parallel, oracle unit
-tests and Newman; nightly — full suite including calculations, matrix, database, concurrency and the
-extended Schemathesis run, Allure with history on GitHub Pages; a job against the next Medusa version.
+| Workflow | When | What runs |
+|---|---|---|
+| [`pr.yml`](.github/workflows/pr.yml) | every PR and push to `main` | ruff, mypy `--strict` and the 22 unit tests **without a stand**; then smoke, functional and negative in parallel, each against its own shop started by the shared [`start-sut`](https://github.com/BilokinTaras/shop-sut/tree/main/.github/actions/start-sut) action; the Postman collection via Newman in the smoke job |
+| [`nightly.yml`](.github/workflows/nightly.yml) | daily 02:23 UTC, manual | the whole suite (calculations, access matrix, database, concurrency included), Schemathesis against the triaged baselines, an Allure 3 report whose history is carried over from the previous night's Pages site, then deployment to Pages |
+
+The shop comes from published multi-arch images, so a job spends its time on tests rather than on building
+Medusa. Results, JUnit and Newman reports are kept as artefacts; stand logs are uploaded when a job fails.
+Third-party actions are pinned to commit SHAs; `actionlint` and `zizmor` report nothing.
 
 ## How-to
 
@@ -163,7 +169,9 @@ real runs against the stand, and every finding was reproduced by hand. Details: 
 
 ## Roadmap & known limitations
 
-- CI on GitHub Actions and Allure with history on Pages (needs the GitHub repository).
+- The workflows pass `actionlint` and `zizmor` locally but have not run on GitHub yet; until the first
+  green nightly the Pages link above has nothing to show.
+- A job against the next Medusa version is not built yet.
 - Admin API coverage is intentionally thin (18/413); extend with promotions and price lists.
 - Schemathesis baselines depend on data in the stand; the triage procedure handles it (see contract-findings).
 - Verified on Windows 11 x86_64; macOS arm64 and Linux runs pending.

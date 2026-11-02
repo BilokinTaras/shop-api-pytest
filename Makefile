@@ -46,8 +46,13 @@ docker-build: ## Build the test runner image
 docker-test: docker-build ## Run the suite in Docker on network qa-shop-net
 	docker run --rm --network qa-shop-net -v "$(abspath $(SUT_DIR))/.generated:/sut:ro" $(IMAGE) -n auto -q -p no:cacheprovider
 
-PK = $(shell grep '^SUT_PUBLISHABLE_KEY=' $(SUT_DIR)/.generated/sut.env | cut -d= -f2)
-ST = uv run schemathesis run contracts/openapi/store.openapi.yaml --url http://localhost:9000 \
+# The stand's address and key: from the environment when set (CI exports them via start-sut), otherwise from
+# the contract file. Never hard-coded, so a stand on another port works too.
+SUT_ENV_FILE ?= $(SUT_DIR)/.generated/sut.env
+sut = $(shell grep '^$(1)=' $(SUT_ENV_FILE) | cut -d= -f2-)
+PK = $(or $(SUT_PUBLISHABLE_KEY),$(call sut,SUT_PUBLISHABLE_KEY))
+BACKEND = $(or $(SUT_BACKEND_URL),$(call sut,SUT_BACKEND_URL))
+ST = uv run schemathesis run contracts/openapi/store.openapi.yaml --url $(BACKEND) \
      -H x-publishable-api-key:$(PK) --checks all --max-examples 20 --workers 4 --generation-deterministic
 ST_STORE = $(ST) --include-method GET --baseline contracts/schemathesis-baseline.store.json
 ST_CARTS = $(ST) --include-path-regex ^/store/carts --baseline contracts/schemathesis-baseline.store-carts.json
