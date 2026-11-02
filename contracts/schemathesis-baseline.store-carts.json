@@ -21,6 +21,16 @@
       "last_seen": "2026-11-01"
     },
     {
+      "id": "d9bcc3",
+      "operation": "DELETE /store/carts/{id}/line-items/{line_id}",
+      "check": "positive_data_acceptance",
+      "failure": "RejectedPositiveData",
+      "signature": "400",
+      "first_seen": "2026-11-02",
+      "last_seen": "2026-11-02",
+      "triage": "SPEC-4"
+    },
+    {
       "id": "b607e5",
       "operation": "DELETE /store/carts/{id}/line-items/{line_id}",
       "check": "response_schema_conformance",
@@ -163,6 +173,16 @@
       "signature": "x-bundled/schema000005/type",
       "first_seen": "2026-11-01",
       "last_seen": "2026-11-01"
+    },
+    {
+      "id": "4ced0a",
+      "operation": "GET /store/carts/{id}",
+      "check": "positive_data_acceptance",
+      "failure": "RejectedPositiveData",
+      "signature": "400",
+      "first_seen": "2026-11-02",
+      "last_seen": "2026-11-02",
+      "triage": "SPEC-4"
     },
     {
       "id": "c53c67",

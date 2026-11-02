@@ -64,4 +64,4 @@ and tax regions collided on a country between workers (now one country pair per 
 | Duration | 82 s with `-n auto` on 12 logical CPUs (committed run); sequential runs were slower but are not recorded |
 | Stability | repeat parallel runs and random orders were green after the isolation fixes; only the latest run is committed as evidence |
 | API coverage | Store 28 / 78 operations by tests (`docs/api-coverage.md`), 48 Store operations fuzzed |
-| Contract | 260 Schemathesis failures triaged, 0 unclassified |
+| Contract | 265 Schemathesis failures triaged, 0 unclassified |

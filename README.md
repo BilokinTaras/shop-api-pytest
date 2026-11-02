@@ -17,7 +17,7 @@ checks — in Python with pytest, httpx and pydantic.
   documentation's own examples. It also showed that Medusa charges sub-cent amounts (35.4745 EUR).
 - **Access matrix:** 4 roles × 15 operations = 58 cases from YAML, separating Medusa's documented
   "ID as capability" design from a real cart-takeover BOLA.
-- **Contract fuzzing:** Schemathesis on the pinned OpenAPI spec, 260 failures triaged (0 unclassified), three
+- **Contract fuzzing:** Schemathesis on the pinned OpenAPI spec, 265 failures triaged (0 unclassified), three
   new 5xx defects found; Postman collection run by Newman.
 
 ## Live reports
