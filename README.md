@@ -68,7 +68,8 @@ Prerequisites: Python ≥ 3.12, [uv](https://docs.astral.sh/uv/), Node.js ≥ 22
 Compose v2, GNU Make. macOS: `brew install uv node`.
 
 ```bash
-make -C ../shop-sut up && make -C ../shop-sut smoke   # the stand, from the sibling repository
+git clone https://github.com/BilokinTaras/shop-sut.git ../shop-sut   # the shop lives in its own repository, next to this one
+make -C ../shop-sut up && make -C ../shop-sut smoke   # start the stand
 uv sync --frozen
 make smoke              # 4 checks
 make test               # full suite in parallel
@@ -172,3 +173,7 @@ real runs against the stand, and every finding was reproduced by hand. Details: 
 
 MIT © 2026 Taras Bilokin — [LICENSE](LICENSE). OpenAPI specs in `contracts/openapi/` are Medusa's (MIT), tag v2.22.2.
 Built with pytest, httpx, pydantic, Hypothesis, Schemathesis (MIT), Allure Report (Apache-2.0), Newman (Apache-2.0).
+
+---
+
+Part of a QA portfolio: [shop-sut](https://github.com/BilokinTaras/shop-sut) (the shop under test) · [shop-e2e-playwright](https://github.com/BilokinTaras/shop-e2e-playwright) (UI and API end-to-end) · **shop-api-pytest** (API depth) · [shop-performance-k6](https://github.com/BilokinTaras/shop-performance-k6) (performance) · [devsecops-quality-gates](https://github.com/BilokinTaras/devsecops-quality-gates) (security pipeline)
