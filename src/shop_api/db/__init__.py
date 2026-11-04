@@ -22,7 +22,12 @@ class ReadOnlyDb:
 
     @contextmanager
     def _cursor(self) -> Iterator[psycopg.Cursor[dict[str, Any]]]:
-        with psycopg.connect(self.url, autocommit=True, row_factory=dict_row) as conn, conn.cursor() as cur:
+        # Without a timeout an unreachable address hangs the test forever instead of failing it (libpq on
+        # Windows does not notice a refused connection to ::1 when the URL says "localhost").
+        with (
+            psycopg.connect(self.url, autocommit=True, row_factory=dict_row, connect_timeout=10) as conn,
+            conn.cursor() as cur,
+        ):
             yield cur
 
     def one(self, sql: str, params: tuple[Any, ...] = ()) -> dict[str, Any] | None:

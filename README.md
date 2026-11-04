@@ -4,7 +4,7 @@ A deep API test suite for **Medusa**, an open-source commerce platform: an indep
 for discounts and taxes, an access-control matrix, OpenAPI contract fuzzing, database and concurrency
 checks — in Python with pytest, httpx and pydantic.
 
-![Python](https://img.shields.io/badge/Python-3.12-3776AB) ![pytest](https://img.shields.io/badge/pytest-9.2-0A9EDC) ![Medusa](https://img.shields.io/badge/Medusa-2.22.2-blue) ![mypy](https://img.shields.io/badge/mypy-strict-2A6DB2) ![License: MIT](https://img.shields.io/badge/license-MIT-green)
+[![PR checks](https://github.com/BilokinTaras/shop-api-pytest/actions/workflows/pr.yml/badge.svg)](https://github.com/BilokinTaras/shop-api-pytest/actions/workflows/pr.yml) [![Nightly](https://github.com/BilokinTaras/shop-api-pytest/actions/workflows/nightly.yml/badge.svg)](https://github.com/BilokinTaras/shop-api-pytest/actions/workflows/nightly.yml) ![Python](https://img.shields.io/badge/Python-3.12-3776AB) ![pytest](https://img.shields.io/badge/pytest-9.2-0A9EDC) ![Medusa](https://img.shields.io/badge/Medusa-2.22.2-blue) ![mypy](https://img.shields.io/badge/mypy-strict-2A6DB2) ![License: MIT](https://img.shields.io/badge/license-MIT-green)
 
 ## In 30 seconds
 
@@ -23,7 +23,9 @@ checks — in Python with pytest, httpx and pydantic.
 ## Live reports
 
 **Allure report of the nightly run, with history:** https://bilokintaras.github.io/shop-api-pytest/
-(published by [`nightly.yml`](.github/workflows/nightly.yml) once its first run is green). Locally:
+(published by [`nightly.yml`](.github/workflows/nightly.yml)). Latest scheduled run, 2026-11-03: **237 tests —
+218 passed, 19 strict expected failures** (Allure lists them as skipped) in 86 s, contract fuzzing with no new
+failures ([run 41613396479](https://github.com/BilokinTaras/shop-api-pytest/actions/runs/41613396479)). Locally:
 `make report` → `allure-report/index.html` (screenshot below from a real local run).
 
 ![Allure report](docs/img/allure-overview.png)
@@ -169,12 +171,10 @@ real runs against the stand, and every finding was reproduced by hand. Details: 
 
 ## Roadmap & known limitations
 
-- The workflows pass `actionlint` and `zizmor` locally but have not run on GitHub yet; until the first
-  green nightly the Pages link above has nothing to show.
 - A job against the next Medusa version is not built yet.
 - Admin API coverage is intentionally thin (18/413); extend with promotions and price lists.
 - Schemathesis baselines depend on data in the stand; the triage procedure handles it (see contract-findings).
-- Verified on Windows 11 x86_64; macOS arm64 and Linux runs pending.
+- Verified on Windows 11 x86_64 and on Linux in CI (GitHub-hosted Ubuntu runners); macOS arm64 is still pending.
 - Findings are not yet filed upstream with Medusa.
 
 ## Licence and credits
